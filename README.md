@@ -91,17 +91,6 @@ Sure! If you have a knack for APIs and a penchant for JavaScript, I could always
 - ebuttonsdude for letting me host an instance for testing on his server.
 - [kubo6472](https://github.com/kubo6472) for helping with Github Actions and creating packages for use with docker-compose.
 
-### Screenshots  
-![](./screenshots/MainPage.png)  
-![](./screenshots/MainPageLoggedIn.png)  
-![](./screenshots/SideMenuLoggedOut.png)  
-![](./screenshots/SideMenuLoggedIn.png)  
-![](./screenshots/TeamPage.png)
-![](./screenshots/TeamSpecificPage.png)
-![](./screenshots/MatchInfo.png)
-![](./screenshots/ProfilePage.png)
-![](./screenshots/ServersPage.png)
-
 # Used By
 Here are a few organizations that have used this webpanel for tournaments/pugs/seasons:
 
