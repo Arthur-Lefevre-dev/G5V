@@ -18,9 +18,9 @@
 
 <script>
 // @ is an alias to /src
-import PlayerStats from "@/components/PlayerStatTable";
-import MatchInfo from "@/components/MatchInfo";
-import VetoInfo from "@/components/VetoTable";
+import PlayerStats from "@/components/PlayerStatTable.vue";
+import MatchInfo from "@/components/MatchInfo.vue";
+import VetoInfo from "@/components/VetoTable.vue";
 export default {
   name: "Match",
   components: {

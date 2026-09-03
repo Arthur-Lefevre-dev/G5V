@@ -1,0 +1,7 @@
+@use "vuetify/settings" with (
+  $body-font-family: ("IBM Plex Sans", system-ui, sans-serif),
+  $heading-font-family: ("Rajdhani", "IBM Plex Sans", sans-serif),
+  $border-radius-root: 4px,
+  $button-border-radius: 4px,
+  $card-border-radius: 4px
+);

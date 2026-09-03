@@ -2,7 +2,7 @@
   <v-row>
     <v-col cols="12" sm="12" md="12" lg="3">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("Metrics.Users") }}
         </v-card-title>
         <v-skeleton-loader
@@ -10,7 +10,7 @@
           :loading="isUsersLoading"
           type="text"
         >
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ userCount }}
           </v-card-text>
         </v-skeleton-loader>
@@ -18,7 +18,7 @@
     </v-col>
     <v-col cols="12" sm="12" md="12" lg="2">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("Metrics.Teams") }}
         </v-card-title>
         <v-skeleton-loader
@@ -26,7 +26,7 @@
           :loading="isTeamsLoading"
           type="text"
         >
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ teamCount }}
           </v-card-text>
         </v-skeleton-loader>
@@ -34,7 +34,7 @@
     </v-col>
     <v-col cols="12" sm="12" md="12" lg="3">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("Metrics.Matches") }}
         </v-card-title>
         <v-skeleton-loader
@@ -42,7 +42,7 @@
           :loading="isMatchesLoading"
           type="text"
         >
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ matchesCount }}
           </v-card-text>
         </v-skeleton-loader>
@@ -50,7 +50,7 @@
     </v-col>
     <v-col cols="12" sm="12" md="12" lg="3">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("Metrics.Complete") }}
         </v-card-title>
         <v-skeleton-loader
@@ -58,7 +58,7 @@
           :loading="isCompleteLoading"
           type="text"
         >
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ matchesComplete }}
           </v-card-text>
         </v-skeleton-loader>
@@ -66,7 +66,7 @@
     </v-col>
     <v-col cols="12" sm="12" md="12" lg="3">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("Metrics.Servers") }}
         </v-card-title>
         <v-skeleton-loader
@@ -74,7 +74,7 @@
           :loading="isServersLoading"
           type="text"
         >
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ serverCount }}
           </v-card-text>
         </v-skeleton-loader>
@@ -82,11 +82,11 @@
     </v-col>
     <v-col cols="12" sm="12" md="12" lg="3">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("Metrics.Maps") }}
         </v-card-title>
         <v-skeleton-loader class="mx-auto" :loading="isMapsLoading" type="text">
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ mapCount }}
           </v-card-text>
         </v-skeleton-loader>
@@ -94,7 +94,7 @@
     </v-col>
     <v-col cols="12" sm="12" md="12" lg="2">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("Metrics.Players") }}
         </v-card-title>
         <v-skeleton-loader
@@ -102,7 +102,7 @@
           :loading="isPlayersLoading"
           type="text"
         >
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ playerCount }}
           </v-card-text>
         </v-skeleton-loader>
@@ -110,7 +110,7 @@
     </v-col>
     <v-col cols="12" sm="12" md="12" lg="2">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("Metrics.Seasons") }}
         </v-card-title>
         <v-skeleton-loader
@@ -118,7 +118,7 @@
           :loading="isSeasonsLoading"
           type="text"
         >
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ seasonCount }}
           </v-card-text>
         </v-skeleton-loader>

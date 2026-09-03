@@ -14,11 +14,14 @@
           max-height="225px"
           :gradient="gradientCalc"
           @error="imageError(idx)"
+          class="g5-match-card rounded-sm"
         >
           <v-card
-            color="rgb(128, 128, 128, 0.4)"
+            color="rgba(14, 20, 25, 0.55)"
             :to="'/match/' + mtch.id"
             max-height="225px"
+            flat
+            class="fill-height d-flex flex-column justify-center"
           >
             <v-card-title class="text-uppercase justify-center text-center">
               {{ mtch.team1_string }}<br />
@@ -28,7 +31,7 @@
             <v-card-subtitle class="text-center">
               BO{{ mtch.max_maps }}
             </v-card-subtitle>
-            <v-card-text class="text-center text-h2">
+            <v-card-text class="text-center match-score text-h2">
               {{ mtch.team1_score }} : {{ mtch.team2_score }}
             </v-card-text>
           </v-card>
@@ -92,10 +95,15 @@ export default {
     }
   },
   computed: {
+    isDarkTheme() {
+      const name = this.$vuetify.theme.global.name;
+      const resolved = typeof name === "object" && name !== null ? name.value : name;
+      return resolved !== "cs2Light";
+    },
     gradientCalc() {
-      if (!this.$vuetify.theme.dark)
-        return "to bottom, rgba(255,255,255,.4), rgba(255,255,255,1)";
-      else return "to bottom, rgba(0,0,0,.4), rgba(0,0,0,1)";
+      if (!this.isDarkTheme)
+        return "to bottom, rgba(255,255,255,.35), rgba(238,241,245,.95)";
+      return "to bottom, rgba(0,0,0,.4), rgba(0,0,0,1)";
     }
   }
 };

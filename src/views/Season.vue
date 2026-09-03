@@ -1,77 +1,108 @@
 <template>
   <v-container class="season" fluid>
-    <v-card>
+    <v-card class="g5-card pa-4 mb-4" flat>
       <v-row>
         <v-col cols="12">
-          <v-card-title
-            v-if="seasonData.start_date != null && seasonData.end_date != null"
-          >
-            {{ seasonData.name }}
+          <div class="d-flex flex-wrap align-center ga-3">
+            <h1 class="text-h4 season-title mb-0">{{ seasonData.name }}</h1>
+            <v-chip v-if="isTournament" color="primary" variant="flat" size="small">
+              {{ $t("Tournament.Badge") }}
+            </v-chip>
             <v-spacer />
-            {{ isStarted }}:
-            {{ new Date(seasonData.start_date).toLocaleDateString("en-CA") }}
-            <br />
-            {{ isEnding }}:
-            {{ new Date(seasonData.end_date).toLocaleDateString("en-CA") }}
-          </v-card-title>
-          <v-card-title
-            v-else-if="
-              seasonData.start_date != null && seasonData.end_date == null
-            "
-          >
-            {{ seasonData.name }}
-            <v-spacer />
-            {{ isStarted }}:
-            {{ new Date(seasonData.start_date).toLocaleDateString("en-CA") }}
-          </v-card-title>
-          <v-card-title v-else>
-            {{ seasonData.name }}
-          </v-card-title>
-          <v-card-title>
-            <v-btn :to="`/leaderboard/${seasonData.id}`">
+            <div class="text-medium-emphasis text-body-2" v-if="seasonData.start_date">
+              {{ isStarted }}:
+              {{ new Date(seasonData.start_date).toLocaleDateString("en-CA") }}
+              <template v-if="seasonData.end_date">
+                — {{ isEnding }}:
+                {{ new Date(seasonData.end_date).toLocaleDateString("en-CA") }}
+              </template>
+            </div>
+          </div>
+          <div class="d-flex flex-wrap ga-2 mt-3">
+            <v-btn variant="outlined" color="primary" :to="`/leaderboard/${seasonData.id}`">
               {{ $t("misc.PLeader") }}
             </v-btn>
-            <v-btn :to="`/leaderboard/teams/${seasonData.id}`">
+            <v-btn
+              variant="outlined"
+              color="primary"
+              :to="`/leaderboard/teams/${seasonData.id}`"
+            >
               {{ $t("Leaderboard.TTitle") }}
             </v-btn>
-          </v-card-title>
-        </v-col>
-        <v-col cols="12">
-          <MatchesTable :user="user" />
+          </div>
         </v-col>
       </v-row>
+    </v-card>
+
+    <v-card v-if="isTournament" class="g5-card pa-4 mb-4" flat>
+      <TournamentPanel
+        :season-id="seasonData.id"
+        :season-owner-id="seasonData.user_id"
+        :user="user"
+        :cvars="seasonCvars"
+      />
+    </v-card>
+
+    <v-card class="g5-card pa-2" flat>
+      <MatchesTable :user="user" />
     </v-card>
   </v-container>
 </template>
 
 <script>
-// @ is an alias to /src
-import MatchesTable from "@/components/MatchesTableNoLimits";
+import MatchesTable from "@/components/MatchesTableNoLimits.vue";
+import TournamentPanel from "@/components/TournamentPanel.vue";
+import { isTournamentSeason, parseCvarMap } from "@/utils/tournament.js";
+
 export default {
   name: "Season",
   components: {
-    MatchesTable
+    MatchesTable,
+    TournamentPanel
   },
   data() {
     return {
       user: {
         admin: false,
         steam_id: "",
-        id: -1,
+        id: null,
         super_admin: false,
         name: "",
         small_image: "",
         medium_image: "",
         large_image: ""
-      }, // should be object from JSON response
+      },
       seasonData: {
         name: "",
         id: -1,
         user_id: -1,
         start_date: null,
         end_date: null
-      }
+      },
+      seasonCvars: {}
     };
+  },
+  computed: {
+    isTournament() {
+      return isTournamentSeason(this.seasonCvars);
+    },
+    isStarted() {
+      if (
+        this.seasonData.start_date >=
+        new Date().toISOString().slice(0, 19).replace("T", " ")
+      )
+        return "Starting";
+      return "Started";
+    },
+    isEnding() {
+      if (
+        this.seasonData.end_date != null &&
+        this.seasonData.end_date <
+          new Date().toISOString().slice(0, 19).replace("T", " ")
+      )
+        return "Ended";
+      return "Ends";
+    }
   },
   async created() {
     this.user = await this.IsLoggedIn();
@@ -80,36 +111,22 @@ export default {
       .toISOString()
       .slice(0, 19)
       .replace("T", " ");
-    if (this.seasonData.end_date != null)
+    if (this.seasonData.end_date != null) {
       this.seasonData.end_date = new Date(this.seasonData.end_date)
         .toISOString()
         .slice(0, 19)
         .replace("T", " ");
-  },
-  computed: {
-    isStarted() {
-      if (
-        this.seasonData.start_date >=
-        new Date()
-          .toISOString()
-          .slice(0, 19)
-          .replace("T", " ")
-      )
-        return "Starting";
-      else return "Started";
-    },
-    isEnding() {
-      if (
-        this.seasonData.end_date != null &&
-        this.seasonData.end_date <
-          new Date()
-            .toISOString()
-            .slice(0, 19)
-            .replace("T", " ")
-      )
-        return "Ended";
-      else return "Ends";
     }
+    const raw = await this.GetSeasonCVARs(this.$route.params.id);
+    this.seasonCvars = parseCvarMap(typeof raw === "string" ? {} : raw);
   }
 };
 </script>
+
+<style scoped>
+.season-title {
+  font-family: "Rajdhani", sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+</style>

@@ -1,9 +1,9 @@
 <template>
   <v-container style="padding: 0px">
-    <v-dialog shake v-model="show" max-width="800px">
-      <v-card color="lighten-4">
+    <v-dialog v-model="show" max-width="800px">
+      <v-card color="surface">
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ title }}
           </span>
           <v-spacer></v-spacer>
@@ -49,7 +49,7 @@
           <v-spacer></v-spacer>
           <v-btn
             color="primary"
-            text
+            variant="text"
             @click="userResetPass()"
             :loading="userLoading"
             :disabled="userLoading"
@@ -63,7 +63,7 @@
       <v-sheet class="text-center" height="200px">
         <v-btn
           class="mt-6"
-          text
+          variant="text"
           color="success"
           @click="
             responseSheet = !responseSheet;
@@ -83,13 +83,14 @@
 <script>
 export default {
   props: {
-    value: Boolean,
+    modelValue: Boolean,
     title: String
   },
+  emits: ["update:modelValue"],
   computed: {
     show: {
       get() {
-        return this.value;
+        return this.modelValue;
       },
       set(value) {
         if (!value) {
@@ -98,7 +99,7 @@ export default {
             this.$refs.loginForm.reset();
           });
         }
-        this.$emit("input", value);
+        this.$emit("update:modelValue", value);
       }
     }
   },

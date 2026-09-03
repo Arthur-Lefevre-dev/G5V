@@ -1,7 +1,7 @@
 {
   "en": {
     "Navbar": {
-      "title": "Get5Vue",
+      "title": "Redwood",
       "AllMatches": "All Matches",
       "MyMatches": "My Matches",
       "MyTeams": "My Teams",
@@ -12,6 +12,7 @@
       "AddServer": "Add New Server",
       "AllSeasons": "All Seasons",
       "MySeasons": "My Seasons",
+      "CreateTournament": "Create Tournament",
       "Logout": "Logout",
       "DarkMode": "Toggle Dark Mode",
       "PlayerLeader": "Player Leaderboard",
@@ -179,6 +180,41 @@
       "ImportTeams": "Import Teams?",
       "ImportError": "Error importing season. Please ensure the Challonge URL is correct."
     },
+    "Tournament": {
+      "Badge": "Tournament",
+      "Bracket": "Bracket",
+      "Create": "Create Tournament",
+      "Manage": "Manage Tournament",
+      "CreateHint": "Single-elimination bracket. First-round matches start automatically on your selected servers. Later rounds start when previous matches finish (auto-advance while an organizer has the page open).",
+      "Name": "Tournament name",
+      "Teams": "Teams",
+      "TeamsHint": "Select at least 2 teams. Byes are added to reach the next power of 2.",
+      "Servers": "Server pool",
+      "ServersHint": "Matches rotate across these servers when they auto-start.",
+      "ServerRequired": "Select at least one server.",
+      "MinTeams": "Select at least 2 teams.",
+      "CreateAndStart": "Create & start round 1",
+      "StartOrAdvance": "Start / advance matches",
+      "CreateError": "Could not create tournament.",
+      "AdvanceError": "Could not advance bracket.",
+      "Started": "Tournament created. {count} match(es) started.",
+      "Advanced": "{count} match(es) started from the bracket.",
+      "NothingToAdvance": "No new matches ready yet.",
+      "SingleElim": "Single elimination",
+      "NoBracket": "No bracket data for this tournament.",
+      "Champion": "Champion",
+      "TBD": "TBD",
+      "Live": "Live",
+      "Bye": "Bye",
+      "Pending": "Pending",
+      "Final": "Final",
+      "Semifinal": "Semifinals",
+      "Quarterfinal": "Quarterfinals",
+      "Round": "Round {n}",
+      "AutoStart": "Auto-start next round",
+      "AutoOn": "Auto-start on",
+      "AutoOff": "Auto-start off"
+    },
     "Matches": {
       "YourMatches": "Your matches",
       "AllMatches": "All matches",
@@ -297,6 +333,10 @@
       "MapDeleteTitle": "Delete Map?",
       "MapDeleteExplain": "Are you sure you wish to delete {map}?",
       "MapNew": "New Map",
+      "MapImportPool": "Import Redwood map pool",
+      "MapImportDone": "Added {count} map(s).",
+      "MapImportNone": "All Redwood maps are already present.",
+      "MapImportError": "Could not import the map pool.",
       "ResetPass": "Reset Password",
       "Challonge": "Challonge API Key",
       "ChallongeSave": "Save Challonge Key"
@@ -361,14 +401,14 @@
       "Import": "Import"
     },
     "Footer": {
-      "company": "Phlex Plexico",
+      "company": "Dragolelele",
       "metrics": "Metrics",
       "powered": "Powered by Steam"
     }
   },
   "fr": {
     "Navbar": {
-      "title": "Get5Vue",
+      "title": "Redwood",
       "AllMatches": "Tous les matchs",
       "MyMatches": "Mes matchs",
       "MyTeams": "Mon équipe",
@@ -379,6 +419,7 @@
       "AddServer": "Ajouter un nouveau serveur",
       "AllSeasons": "Toutes les saisons",
       "MySeasons": "Ma saison",
+      "CreateTournament": "Créer un tournoi",
       "Logout": "Déconnexion",
       "DarkMode": "Action le mode sombre",
       "PlayerLeader": "Classement des joueurs",
@@ -546,6 +587,41 @@
       "ImportTeams": "Importer les équipes ?",
       "ImportError": "Erreur durant l'import de la saison. Assurez-vous que l'URL Challonge est correcte."
     },
+    "Tournament": {
+      "Badge": "Tournoi",
+      "Bracket": "Arbre du tournoi",
+      "Create": "Créer un tournoi",
+      "Manage": "Gérer le tournoi",
+      "CreateHint": "Arbre à élimination directe. Les matchs du 1er tour démarrent automatiquement sur vos serveurs. Les tours suivants démarrent quand les matchs précédents sont terminés (auto-avance si un organisateur a la page ouverte).",
+      "Name": "Nom du tournoi",
+      "Teams": "Équipes",
+      "TeamsHint": "Sélectionnez au moins 2 équipes. Des byes sont ajoutés jusqu'à la prochaine puissance de 2.",
+      "Servers": "Pool de serveurs",
+      "ServersHint": "Les matchs tournent sur ces serveurs au démarrage auto.",
+      "ServerRequired": "Sélectionnez au moins un serveur.",
+      "MinTeams": "Sélectionnez au moins 2 équipes.",
+      "CreateAndStart": "Créer et lancer le tour 1",
+      "StartOrAdvance": "Lancer / avancer les matchs",
+      "CreateError": "Impossible de créer le tournoi.",
+      "AdvanceError": "Impossible d'avancer l'arbre.",
+      "Started": "Tournoi créé. {count} match(s) lancé(s).",
+      "Advanced": "{count} match(s) lancé(s) depuis l'arbre.",
+      "NothingToAdvance": "Aucun nouveau match prêt pour l'instant.",
+      "SingleElim": "Élimination directe",
+      "NoBracket": "Pas de données d'arbre pour ce tournoi.",
+      "Champion": "Champion",
+      "TBD": "À venir",
+      "Live": "En cours",
+      "Bye": "Bye",
+      "Pending": "En attente",
+      "Final": "Finale",
+      "Semifinal": "Demi-finales",
+      "Quarterfinal": "Quarts de finale",
+      "Round": "Tour {n}",
+      "AutoStart": "Démarrage auto du tour suivant",
+      "AutoOn": "Auto-start activé",
+      "AutoOff": "Auto-start désactivé"
+    },
     "Matches": {
       "YourMatches": "Vos matchs",
       "AllMatches": "Tous les matchs",
@@ -664,6 +740,10 @@
       "MapDeleteTitle": "Supprimer la Map?",
       "MapDeleteExplain": "Êtes-vous sûr de vouloir supprimer {map}?",
       "MapNew": "Nouvelle Map",
+      "MapImportPool": "Importer le pool Redwood",
+      "MapImportDone": "{count} map(s) ajoutée(s).",
+      "MapImportNone": "Toutes les maps Redwood sont déjà présentes.",
+      "MapImportError": "Impossible d'importer le pool de maps.",
       "ResetPass": "Réinitialiser Mot de passe",
       "Challonge": "Clé API Challonge",
       "ChallongeSave": "Sauver la clé Challonge"
@@ -728,14 +808,14 @@
       "Import": "Importer"
     },
     "Footer": {
-      "company": "Phlex Plexico",
+      "company": "Dragolelele",
       "metrics": "Metrics",
       "powered": "Powered by Steam"
     }
   },
   "jp": {
     "Navbar": {
-      "title": "Get5Vue",
+      "title": "Redwood",
       "AllMatches": "マッチリスト",
       "MyMatches": "あなたのマッチ",
       "MyTeams": "あなたのチーム",
@@ -746,6 +826,7 @@
       "AddServer": "サーバーの追加",
       "AllSeasons": "オールシーズンズ",
       "MySeasons": "私の季節",
+      "CreateTournament": "トーナメント作成",
       "Logout": "ログアウト",
       "DarkMode": "ダークモードを切り替えます",
       "PlayerLeader": "プレイヤーリーダーボード",
@@ -909,6 +990,41 @@
       "ImportTeams": "輸入チーム？",
       "ImportError": "シーズンのインポートにエラーが発生しました。ChallongeのURLが正しいかどうか確認してください。"
     },
+    "Tournament": {
+      "Badge": "トーナメント",
+      "Bracket": "ブラケット",
+      "Create": "トーナメント作成",
+      "Manage": "トーナメント管理",
+      "CreateHint": "シングルエリミネーション。1回戦は選択サーバーで自動開始。次のラウンドは前の試合終了後に自動開始（主催者がページを開いている場合）。",
+      "Name": "トーナメント名",
+      "Teams": "チーム",
+      "TeamsHint": "2チーム以上。次の2の累乗までバイが追加されます。",
+      "Servers": "サーバープール",
+      "ServersHint": "自動開始時にこれらのサーバーをローテーションします。",
+      "ServerRequired": "サーバーを1台以上選択してください。",
+      "MinTeams": "2チーム以上選択してください。",
+      "CreateAndStart": "作成して1回戦を開始",
+      "StartOrAdvance": "試合を開始 / 進出",
+      "CreateError": "トーナメントを作成できませんでした。",
+      "AdvanceError": "ブラケットを進められませんでした。",
+      "Started": "トーナメント作成。{count}試合を開始しました。",
+      "Advanced": "ブラケットから{count}試合を開始しました。",
+      "NothingToAdvance": "開始できる新しい試合はまだありません。",
+      "SingleElim": "シングルエリミネーション",
+      "NoBracket": "このトーナメントのブラケットデータがありません。",
+      "Champion": "優勝",
+      "TBD": "未定",
+      "Live": "進行中",
+      "Bye": "バイ",
+      "Pending": "待機",
+      "Final": "決勝",
+      "Semifinal": "準決勝",
+      "Quarterfinal": "準々決勝",
+      "Round": "ラウンド {n}",
+      "AutoStart": "次ラウンド自動開始",
+      "AutoOn": "自動開始オン",
+      "AutoOff": "自動開始オフ"
+    },
     "Matches": {
       "YourMatches": "あなたのマッチ",
       "AllMatches": "すべてのマッチ",
@@ -1025,6 +1141,10 @@
       "MapDeleteTitle": "地図を削除する？",
       "MapDeleteExplain": "削除してもよろしいですか {map}？",
       "MapNew": "新しい地図",
+      "MapImportPool": "Redwoodマッププールをインポート",
+      "MapImportDone": "{count}マップを追加しました。",
+      "MapImportNone": "Redwoodマップは既にすべて登録済みです。",
+      "MapImportError": "マッププールをインポートできませんでした。",
       "ResetPass": "パスワードの再設定",
       "Challonge": "Challonge APIキー",
       "ChallongeSave": "セーブチャレンジキー"
@@ -1089,7 +1209,7 @@
       "Import": "輸入"
     },
     "Footer": {
-      "company": "Phlex Plexico",
+      "company": "Dragolelele",
       "metrics": "メトリック",
       "powered": "Powered by Steam"
     }

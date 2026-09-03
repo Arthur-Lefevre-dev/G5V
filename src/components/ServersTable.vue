@@ -1,17 +1,17 @@
 <template>
   <v-container fluid>
     <v-data-table
-      item-key="id"
+      item-value="id"
       class="elevation-1"
       :loading="isLoading"
       :loading-text="$t('misc.LoadText')"
       :headers="selectedHeaders"
       :items="servers"
-      :sort-by="['id']"
+      :sort-by="[{ key: 'id', order: 'asc' }]"
       ref="ServersTable"
     >
       <template v-slot:top>
-        <v-toolbar flat>
+        <v-toolbar flat class="g5-table-toolbar">
           {{ $t("MyServers.Title") }}
           <v-spacer />
           <v-btn
@@ -51,16 +51,16 @@
         </router-link>
       </template>
       <template v-slot:item.public_server="{ item }">
-        <v-icon v-if="item.public_server == 1" color="green darken-2">
+        <v-icon v-if="item.public_server == 1" color="green-darken-2">
           mdi-check-circle
         </v-icon>
-        <v-icon v-else color="red darken-2">
+        <v-icon v-else color="red-darken-2">
           mdi-close-circle
         </v-icon>
       </template>
       <template v-slot:item.status="{ item }">
         <v-btn
-          small
+          size="small"
           @click="checkStatus(item)"
           :color="item.colour"
           :loading="item.isLoading"
@@ -94,7 +94,7 @@
       <v-sheet class="text-center" height="200px">
         <v-btn
           class="mt-6"
-          text
+          variant="text"
           color="success"
           @click="
             responseSheet = !responseSheet;
@@ -111,16 +111,16 @@
     <v-dialog v-model="deleteDialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ $t("MyServers.DeleteConfirmation") }}
           </span>
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="deleteDialog = false">
+          <v-btn color="blue-darken-1" variant="text" @click="deleteDialog = false">
             {{ $t("misc.No") }}
           </v-btn>
-          <v-btn color="red darken-1" text @click="deleteServerConfirm()">
+          <v-btn color="red-darken-1" variant="text" @click="deleteServerConfirm()">
             {{ $t("misc.Yes") }}
           </v-btn>
         </v-card-actions>
@@ -136,7 +136,7 @@
 </template>
 
 <script>
-import ServerDialog from "./ServerDialog";
+import ServerDialog from "./ServerDialog.vue";
 export default {
   props: {
     user: Object
@@ -187,51 +187,51 @@ export default {
     headers() {
       return [
         {
-          text: this.$t("MyServers.ID"),
+          title: this.$t("MyServers.ID"),
           align: "start",
           sortable: true,
-          value: "id"
+          key: "id"
         },
         {
-          text: this.$t("MyServers.Name"),
-          value: "display_name"
+          title: this.$t("MyServers.Name"),
+          key: "display_name"
         },
         {
-          text: this.$t("MyServers.Host"),
-          value: "ip_string"
+          title: this.$t("MyServers.Host"),
+          key: "ip_string"
         },
         {
-          text: this.$t("MyServers.Port"),
-          value: "port"
+          title: this.$t("MyServers.Port"),
+          key: "port"
         },
         {
-          text: this.$t("MyServers.RCONPass"),
-          value: "rcon_password"
+          title: this.$t("MyServers.RCONPass"),
+          key: "rcon_password"
         },
         {
-          text: this.$t("ServerCreate.FormGOTVPort"),
-          value: "gotv_port"
+          title: this.$t("ServerCreate.FormGOTVPort"),
+          key: "gotv_port"
         },
         {
-          text: this.$t("MyServers.IsPublic"),
-          value: "public_server"
+          title: this.$t("MyServers.IsPublic"),
+          key: "public_server"
         },
         {
-          text: this.$t("MyServers.Owner"),
-          value: "name"
+          title: this.$t("MyServers.Owner"),
+          key: "name"
         },
         {
-          text: this.$t("MyServers.Flag"),
-          value: "flag"
+          title: this.$t("MyServers.Flag"),
+          key: "flag"
         },
         {
-          text: "",
-          value: "actions",
+          title: "",
+          key: "actions",
           sortable: false
         },
         {
-          text: "",
-          value: "status",
+          title: "",
+          key: "status",
           sortable: false
         }
       ];
@@ -242,7 +242,7 @@ export default {
       if (this.servers.length > 0 && this.servers[0].rcon_password == null) {
         arrIndex = tmpHeaders
           .map(obj => {
-            return obj.value;
+            return obj.key;
           })
           .indexOf("rcon_password");
         tmpHeaders.splice(arrIndex, 1);
@@ -250,7 +250,7 @@ export default {
       if (this.servers.length > 0 && this.servers[0].ip_string == null) {
         arrIndex = tmpHeaders
           .map(obj => {
-            return obj.value;
+            return obj.key;
           })
           .indexOf("ip_string");
         tmpHeaders.splice(arrIndex, 1);
@@ -258,7 +258,7 @@ export default {
       if (this.servers.length > 0 && this.servers[0].port == null) {
         arrIndex = tmpHeaders
           .map(obj => {
-            return obj.value;
+            return obj.key;
           })
           .indexOf("port");
         tmpHeaders.splice(arrIndex, 1);
@@ -266,7 +266,7 @@ export default {
       if (this.servers.length > 0 && this.servers[0].gotv_port == null) {
         arrIndex = tmpHeaders
           .map(obj => {
-            return obj.value;
+            return obj.key;
           })
           .indexOf("gotv_port");
         tmpHeaders.splice(arrIndex, 1);

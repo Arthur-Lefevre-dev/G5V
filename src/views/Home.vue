@@ -14,9 +14,9 @@
 
 <script>
 // @ is an alias to /src
-import TeamLeaderBoard from "@/components/TeamLeaderboardTable";
-import PlayerLeaderBoard from "@/components/PlayerLeaderboardTable";
-import MatchCards from "@/components/MatchCard";
+import TeamLeaderBoard from "@/components/TeamLeaderboardTable.vue";
+import PlayerLeaderBoard from "@/components/PlayerLeaderboardTable.vue";
+import MatchCards from "@/components/MatchCard.vue";
 export default {
   name: "Home",
   components: {

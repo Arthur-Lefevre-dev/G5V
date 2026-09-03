@@ -1,13 +1,13 @@
 <template>
   <v-container class="mapstatsinfo" fluid>
-    <v-flex class="text-right" v-if="AdminToolsAvailable(matchInfo)">
+    <div class="text-right" v-if="AdminToolsAvailable(matchInfo)">
       <AdminButton
         :matchInfo="matchInfo"
         :user="user"
         @force-the-reload="getMatchInfo()"
       />
-    </v-flex>
-    <v-flex v-else />
+    </div>
+    <div v-else />
     <div class="text-h4 names" align="center">
       <router-link
         v-if="matchInfo.team1.id != 0"
@@ -63,9 +63,10 @@
         {{ matchInfo.team2_name }}
       </div>
     </div>
-    <div class="final-score text-h4" align="center">
-      {{ matchInfo.team1_score }} {{ matchInfo.symbol }}
-      {{ matchInfo.team2_score }}
+    <div class="final-score match-score text-h2 g5-card pa-4 my-4" align="center">
+      <span class="text-primary">{{ matchInfo.team1_score }}</span>
+      <span class="mx-4 text-medium-emphasis">{{ matchInfo.symbol }}</span>
+      <span class="text-primary">{{ matchInfo.team2_score }}</span>
     </div>
     <div class="start-date text-subtitle-2" align="center">
       {{ $t("Match.StartTime") }} {{ matchInfo.start_time }}
@@ -97,7 +98,7 @@
     >
       <v-btn
         color="primary"
-        small
+        size="small"
         :href="
           'steam://rungame/730/' +
             user.steam_id +
@@ -112,7 +113,7 @@
       <div v-if="serverInfo.gotv_port != null">
         <v-btn
           color="secondary"
-          small
+          size="small"
           :href="
             'steam://rungame/730/' +
               user.steam_id +
@@ -130,7 +131,7 @@
 </template>
 
 <script>
-import AdminButton from "./MatchAdminButton";
+import AdminButton from "./MatchAdminButton.vue";
 export default {
   components: {
     AdminButton
@@ -138,9 +139,6 @@ export default {
   props: {
     match_id: Number,
     user: Object
-  },
-  sse: {
-    cleanup: true
   },
   data() {
     return {
@@ -185,7 +183,7 @@ export default {
         port: 0,
         gotv_port: 0
       },
-      apiUrl: process.env?.VUE_APP_G5V_API_URL || "/api",
+      apiUrl: process.env.VUE_APP_G5V_API_URL || "/api",
       imageLoaded: true
     };
   },

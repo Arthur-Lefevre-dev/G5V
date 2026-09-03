@@ -1,18 +1,20 @@
 <template>
   <v-container fluid>
     <v-data-table
-      item-key="id"
+      item-value="id"
       class="elevation-1"
       :loading="isLoading"
       :loading-text="$t('misc.LoadText')"
       :headers="headers"
       :items="teams"
-      :options.sync="options"
-      :server-items-length="totalTeams"
+      v-model:page="page"
+      v-model:items-per-page="itemsPerPage"
+      v-model:sort-by="sortBy"
+      :items-length="totalTeams"
       ref="TeamsTable"
     >
       <template v-slot:top>
-        <v-toolbar flat>
+        <v-toolbar flat class="g5-table-toolbar">
           {{ $t("Teams.Title") }}
           <v-spacer />
           <v-btn
@@ -41,12 +43,11 @@
     <v-dialog
       v-model="newImportDialog"
       transition="dialog-bottom-transition"
-      hide-overlay
       max-width="600px"
     >
       <v-card>
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ $t("Seasons.Import") }}
           </span>
         </v-card-title>
@@ -69,10 +70,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="newImportDialog = false">
+          <v-btn color="red-darken-1" variant="text" @click="newImportDialog = false">
             {{ $t("misc.Cancel") }}
           </v-btn>
-          <v-btn color="blue darken-1" text @click="importChallongeTeams()">
+          <v-btn color="blue-darken-1" variant="text" @click="importChallongeTeams()">
             {{ $t("misc.Import") }}
           </v-btn>
         </v-card-actions>
@@ -82,7 +83,7 @@
       <v-sheet class="text-center" height="200px">
         <v-btn
           class="mt-6"
-          text
+          variant="text"
           color="success"
           @click="
             responseSheet = !responseSheet;
@@ -114,7 +115,9 @@ export default {
       },
       responseSheet: false,
       response: "",
-      options: {},
+      page: 1,
+      itemsPerPage: 10,
+      sortBy: [{ key: "id", order: "asc" }],
       totalTeams: -1
     };
   },
@@ -127,7 +130,17 @@ export default {
         };
       }
     },
-    options: {
+    page: {
+      handler() {
+        this.GetTeams();
+      }
+    },
+    itemsPerPage: {
+      handler() {
+        this.GetTeams();
+      }
+    },
+    sortBy: {
       handler() {
         this.GetTeams();
       },
@@ -138,27 +151,27 @@ export default {
     headers() {
       return [
         {
-          text: this.$t("Team.ID"),
+          title: this.$t("Team.ID"),
           align: "start",
           sortable: true,
-          value: "id"
+          key: "id"
         },
         {
-          text: this.$t("Team.Name"),
-          value: "name"
+          title: this.$t("Team.Name"),
+          key: "name"
         },
         {
-          text: this.$t("Team.TeamTag"),
-          value: "tag",
+          title: this.$t("Team.TeamTag"),
+          key: "tag",
           sortable: false
         },
         {
-          text: this.$t("Team.Flag"),
-          value: "flag"
+          title: this.$t("Team.Flag"),
+          key: "flag"
         },
         {
-          text: this.$t("Team.Owner"),
-          value: "owner"
+          title: this.$t("Team.Owner"),
+          key: "owner"
         }
       ];
     }
@@ -172,13 +185,15 @@ export default {
           ? await this.GetAllTeams()
           : await this.GetMyTeams();
 
-      const { sortBy, sortDesc, page, itemsPerPage } = this.options;
+      const sortItem = this.sortBy?.[0];
       if (typeof count == "string") count = [];
-      if (sortBy.length === 1 && sortDesc.length === 1) {
+      if (sortItem?.key) {
+        const sortKey = sortItem.key;
+        const sortDesc = sortItem.order === "desc";
         count = count.sort((a, b) => {
-          const sortA = a[sortBy[0]];
-          const sortB = b[sortBy[0]];
-          if (sortDesc[0]) {
+          const sortA = a[sortKey];
+          const sortB = b[sortKey];
+          if (sortDesc) {
             if (sortA < sortB) return 1;
             if (sortA > sortB) return -1;
             return 0;
@@ -190,15 +205,17 @@ export default {
         });
       }
 
-      // Filter based on what the user is. Maybe swap this over to the API?
       if (!this.user.id || !this.IsAnyAdmin(this.user)) {
         count = count.filter(
           team => team.public_team == 1 || team.user_id == this.user.id
         );
       }
       this.totalTeams = count.length;
-      if (itemsPerPage > 0) {
-        count = count.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+      if (this.itemsPerPage > 0) {
+        count = count.slice(
+          (this.page - 1) * this.itemsPerPage,
+          this.page * this.itemsPerPage
+        );
       }
       this.teams = count;
       this.isLoading = false;
@@ -224,6 +241,9 @@ export default {
       }
       return;
     }
+  },
+  async mounted() {
+    await this.GetTeams();
   }
 };
 </script>

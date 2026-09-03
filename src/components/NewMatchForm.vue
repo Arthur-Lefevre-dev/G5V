@@ -3,8 +3,8 @@
     <v-card-title class="title font-weight-regular justify-space-between">
       <span>{{ currentTitle }}</span>
       <v-avatar
-        color="primary lighten-2"
-        class="subheading white--text"
+        color="primary-lighten-2"
+        class="subheading text-white"
         size="24"
         v-text="step"
       ></v-avatar>
@@ -16,7 +16,7 @@
             <v-select
               v-model="selectedServer"
               :items="servers"
-              item-text="display_name"
+              item-title="display_name"
               item-value="id"
               :rules="[v => v != -1 || $t('misc.Required')]"
               :label="$t('CreateMatch.ServerLabel')"
@@ -43,7 +43,7 @@
             <v-select
               v-model="selectedSeason"
               :items="seasons"
-              item-text="name"
+              item-title="name"
               item-value="id"
               :label="$t('CreateMatch.SeasonLabel')"
               ref="newServer"
@@ -61,7 +61,7 @@
             <v-select
               v-model="newMatchData.team1_id"
               :items="teams"
-              item-text="name"
+              item-title="name"
               item-value="id"
               :rules="[
                 v => !!v || $t('CreateMatch.TeamRequired'),
@@ -76,7 +76,7 @@
             <v-select
               v-model="newMatchData.team2_id"
               :items="teams"
-              item-text="name"
+              item-title="name"
               item-value="id"
               :rules="[
                 v => !!v || $t('CreateMatch.TeamRequired'),
@@ -103,7 +103,7 @@
               <v-col cols="12">
                 <strong>{{ $t("CreateMatch.FormSeriesType") }}</strong>
               </v-col>
-              <v-radio-group v-model="newMatchData.maps_to_win" row>
+              <v-radio-group v-model="newMatchData.maps_to_win" inline>
                 <v-col lg="3" sm="12">
                   <v-radio :label="$t('CreateMatch.BestOf') + 1" :value="1" />
                 </v-col>
@@ -125,9 +125,9 @@
             <div>
               <strong>
                 {{ $t("CreateMatch.FormMapPool") }}
-                <v-tooltip bottom>
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-btn v-bind="attrs" v-on="on" x-small fab icon>
+                <v-tooltip location="bottom">
+                  <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" size="x-small" icon>
                       <v-icon>mdi-information</v-icon>
                     </v-btn>
                   </template>
@@ -210,7 +210,7 @@
                   :hint="$t('Team.AuthHint')"
                   multiple
                   chips
-                  deletable-chips
+                  closable-chips
                 />
               </v-col>
             </v-row>
@@ -242,7 +242,7 @@
                     })
                   }}
                 </v-col>
-                <v-radio-group row v-model="newMatchData.map_sides[index]">
+                <v-radio-group inline v-model="newMatchData.map_sides[index]">
                   <v-col lg="12" sm="12" align-self="center">
                     <v-radio
                       :label="$t('CreateMatch.MapSidesTeam1CT')"
@@ -267,7 +267,7 @@
             <v-row class="justify-center">
               <v-radio-group
                 v-model="newMatchData.side_type"
-                row
+                inline
                 class="justify-center"
               >
                 <v-col lg="4" sm="13" align-self="center">
@@ -302,7 +302,7 @@
                   ref="CVARs"
                   multiple
                   chips
-                  deletable-chips
+                  closable-chips
                 />
               </v-col>
             </v-row>
@@ -312,13 +312,13 @@
     </v-window>
     <v-divider></v-divider>
     <v-card-actions>
-      <v-btn :disabled="step === 1" text @click="checkValidation(false)">
+      <v-btn :disabled="step === 1" variant="text" @click="checkValidation(false)">
         {{ $t("misc.Back") }}
       </v-btn>
       <v-spacer />
       <v-btn
         color="primary"
-        depressed
+        variant="flat"
         @click="callCreateMatch"
         v-if="step === 3"
         :loading="isLoading"
@@ -329,7 +329,7 @@
         v-else
         :disabled="step === 3"
         color="primary"
-        depressed
+        variant="flat"
         @click="checkValidation"
       >
         {{ $t("misc.Next") }}
@@ -343,7 +343,7 @@
     />
     <v-bottom-sheet v-model="responseSheet" inset persistent>
       <v-sheet class="text-center" height="200px">
-        <v-btn class="mt-6" text color="success" @click="GoToMatch">
+        <v-btn class="mt-6" variant="text" color="success" @click="GoToMatch">
           {{ $t("misc.Close") }}
         </v-btn>
         <div class="my-3">
@@ -355,7 +355,8 @@
 </template>
 
 <script>
-import ServerDialog from "./ServerDialog";
+import ServerDialog from "./ServerDialog.vue";
+import { resolveMapList } from "@/utils/maps.js";
 export default {
   props: {
     user: Object
@@ -501,7 +502,7 @@ export default {
     });
     this.seasons = await this.GetMyAvailableSeasons();
     if (typeof this.seasons == "string") this.seasons = [];
-    this.MapList = await this.GetUserEnabledMapList(this.user.id);
+    this.MapList = resolveMapList(await this.GetUserEnabledMapList(this.user.id));
   },
   methods: {
     async ReloadServers() {

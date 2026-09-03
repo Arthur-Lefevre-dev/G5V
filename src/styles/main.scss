@@ -1,0 +1,148 @@
+:root,
+html[data-theme="cs2Dark"] {
+  color-scheme: dark;
+  --g5-bg: #0e1419;
+  --g5-surface: #1a222d;
+  --g5-surface-2: #232d3b;
+  --g5-accent: #de9b35;
+  --g5-accent-dim: #b87a24;
+  --g5-text: #e8edf2;
+  --g5-muted: #8b9bb0;
+  --g5-line: rgba(222, 155, 53, 0.35);
+  --g5-navbar-bg: rgba(26, 34, 45, 0.92);
+  --g5-border: rgba(255, 255, 255, 0.08);
+  --g5-body-glow: rgba(222, 155, 53, 0.12);
+  --g5-body-top: #121820;
+  --g5-body-bottom: #0a0e12;
+  --g5-card-shadow: rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="cs2Light"] {
+  color-scheme: light;
+  --g5-bg: #eef1f5;
+  --g5-surface: #ffffff;
+  --g5-surface-2: #f4f6f8;
+  --g5-accent: #c47d1a;
+  --g5-accent-dim: #a36614;
+  --g5-text: #1a222d;
+  --g5-muted: #5a6b7d;
+  --g5-line: rgba(196, 125, 26, 0.35);
+  --g5-navbar-bg: rgba(255, 255, 255, 0.94);
+  --g5-border: rgba(26, 34, 45, 0.1);
+  --g5-body-glow: rgba(196, 125, 26, 0.1);
+  --g5-body-top: #f7f8fa;
+  --g5-body-bottom: #e4e8ee;
+  --g5-card-shadow: rgba(26, 34, 45, 0.12);
+}
+
+html,
+body,
+#app {
+  min-height: 100%;
+  background: var(--g5-bg);
+  color: var(--g5-text);
+}
+
+body {
+  font-family: "IBM Plex Sans", system-ui, sans-serif;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, var(--g5-body-glow), transparent),
+    linear-gradient(180deg, var(--g5-body-top) 0%, var(--g5-bg) 40%, var(--g5-body-bottom) 100%);
+  background-attachment: fixed;
+  color: var(--g5-text);
+}
+
+.v-application {
+  font-family: "IBM Plex Sans", system-ui, sans-serif !important;
+  background: transparent !important;
+  color: var(--g5-text);
+}
+
+.v-application h1,
+.v-application h2,
+.v-application h3,
+.v-application .text-h1,
+.v-application .text-h2,
+.v-application .text-h3,
+.v-application .text-h4,
+.v-application .text-h5,
+.v-toolbar-title,
+.match-score {
+  font-family: "Rajdhani", "IBM Plex Sans", sans-serif !important;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.v-main {
+  min-height: calc(100vh - 120px);
+}
+
+.g5-card {
+  background: var(--g5-surface) !important;
+  color: var(--g5-text) !important;
+  border: 1px solid var(--g5-border);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.g5-card:hover {
+  border-color: var(--g5-line);
+}
+
+.g5-match-card {
+  overflow: hidden;
+  border: 1px solid var(--g5-border);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.g5-match-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--g5-accent);
+  box-shadow: 0 12px 32px var(--g5-card-shadow);
+}
+
+.g5-table-toolbar {
+  border-bottom: 1px solid var(--g5-line);
+}
+
+.v-data-table {
+  background: var(--g5-surface) !important;
+  color: var(--g5-text) !important;
+}
+
+.v-data-table thead th {
+  font-family: "Rajdhani", sans-serif !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--g5-accent) !important;
+}
+
+.g5-navbar {
+  background: var(--g5-navbar-bg) !important;
+}
+
+.g5-brand-title {
+  font-family: "Rajdhani", sans-serif !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--g5-accent) !important;
+}
+
+.g5-footer {
+  background: var(--g5-surface) !important;
+  color: var(--g5-text) !important;
+  border-top: 1px solid var(--g5-line);
+}
+
+.v-app-bar {
+  border-bottom: 1px solid var(--g5-line) !important;
+  backdrop-filter: blur(8px);
+}
+
+.v-navigation-drawer {
+  border-right: 1px solid var(--g5-border) !important;
+}
+
+a {
+  color: var(--g5-accent);
+}

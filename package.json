@@ -1,40 +1,30 @@
 {
-  "name": "g5v",
-  "version": "1.7.1",
+  "name": "redwood",
+  "version": "2.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "serve": "vite",
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
-    "axios": "^0.26.0",
-    "core-js": "^3.6.5",
-    "register-service-worker": "^1.7.1",
-    "vue": "^2.6.14",
-    "vue-i18n": "^8.22.1",
-    "vue-router": "^3.2.0",
-    "vue-sse": "^2.5.2",
-    "vuetify": "^2.6.10",
-    "vuex": "^3.4.0"
+    "@mdi/font": "^7.4.47",
+    "axios": "^1.7.9",
+    "vue": "^3.5.13",
+    "vue-i18n": "^10.0.5",
+    "vue-router": "^4.5.0",
+    "vuetify": "^3.7.6",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~5.0.4",
-    "@vue/cli-plugin-eslint": "~5.0.4",
-    "@vue/cli-plugin-pwa": "~5.0.4",
-    "@vue/cli-plugin-router": "~5.0.4",
-    "@vue/cli-plugin-vuex": "~5.0.4",
-    "@vue/cli-service": "~5.0.4",
-    "@vue/eslint-config-prettier": "^6.0.0",
-    "babel-eslint": "^10.1.0",
-    "eslint": "^7.32.0",
-    "eslint-plugin-prettier": "^3.1.3",
-    "eslint-plugin-vue": "^6.2.2",
-    "prettier": "^1.19.1",
-    "sass": "^1.19.0",
-    "sass-loader": "^8.0.0",
-    "vue-cli-plugin-vuetify": "~2.4.6",
-    "vue-template-compiler": "^2.6.14",
-    "vuetify-loader": "^1.7.3"
+    "@vitejs/plugin-vue": "^5.2.1",
+    "eslint": "^8.57.1",
+    "eslint-plugin-vue": "^9.32.0",
+    "sass": "^1.83.0",
+    "vite": "^6.0.6",
+    "vite-plugin-vuetify": "^2.0.4"
   }
 }

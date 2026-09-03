@@ -6,7 +6,7 @@
 
 <script>
 // @ is an alias to /src
-import MetricsInfo from "@/components/MetricsInfo";
+import MetricsInfo from "@/components/MetricsInfo.vue";
 export default {
   name: "Home",
   components: {

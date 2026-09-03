@@ -1,9 +1,9 @@
 <template>
   <v-container>
-    <v-dialog shake v-model="show" persistent max-width="800px">
-      <v-card color="lighten-4">
+    <v-dialog v-model="show" persistent max-width="800px">
+      <v-card color="surface">
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ title }}
           </span>
         </v-card-title>
@@ -15,8 +15,7 @@
                   <v-col cols="12">
                     <v-alert
                       border="bottom"
-                      color="secondary darken-1"
-                      dark
+                      color="secondary-darken-1"
                       icon="mdi-information-outline"
                       v-html="$t('ServerCreate.Get5Help')"
                     >
@@ -113,8 +112,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            color="darken-1"
-            text
+            variant="text"
             @click.stop="show = false"
             :disabled="serverLoading"
           >
@@ -122,7 +120,7 @@
           </v-btn>
           <v-btn
             color="primary"
-            text
+            variant="text"
             @click="saveServer()"
             :loading="serverLoading"
             :disabled="serverLoading"
@@ -136,7 +134,7 @@
       <v-sheet class="text-center" height="200px">
         <v-btn
           class="mt-6"
-          text
+          variant="text"
           color="success"
           @click="
             responseSheet = !responseSheet;
@@ -156,14 +154,15 @@
 <script>
 export default {
   props: {
-    value: Boolean,
+    modelValue: Boolean,
     serverInfo: Object,
     title: String
   },
+  emits: ["update:modelValue", "is-new-server"],
   computed: {
     show: {
       get() {
-        return this.value;
+        return this.modelValue;
       },
       set(value) {
         if (!value) {
@@ -171,7 +170,7 @@ export default {
             this.$refs.serverForm.resetValidation();
           });
         }
-        this.$emit("input", value);
+        this.$emit("update:modelValue", value);
       }
     }
   },

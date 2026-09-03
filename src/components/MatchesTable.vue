@@ -1,13 +1,15 @@
 <template>
   <v-data-table
-    item-key="name"
+    item-value="name"
     class="elevation-1"
     :loading="isLoading"
     :loading-text="$t('misc.LoadText')"
     :headers="headers"
     :items="matches"
-    :options.sync="options"
-    :server-items-length="totalMatches"
+    v-model:page="page"
+    v-model:items-per-page="itemsPerPage"
+    v-model:sort-by="sortBy"
+    :items-length="totalMatches"
     ref="MatchesTable"
   >
     <template v-slot:item.id="{ item }">
@@ -50,9 +52,9 @@
     </template>
     <template v-slot:top>
       <div v-if="isMyMatches && isThereCancelledMatches">
-        <v-toolbar flat>
+        <v-toolbar flat class="g5-table-toolbar">
           <v-toolbar-title>
-            <v-btn primary @click="deleteCancelled" :loading="deletePending">
+            <v-btn color="primary" @click="deleteCancelled" :loading="deletePending">
               {{ $t("Matches.DeleteButton") }}
             </v-btn>
           </v-toolbar-title>
@@ -74,7 +76,9 @@ export default {
       isLoading: true,
       isThereCancelledMatches: false,
       totalMatches: -1,
-      options: {},
+      page: 1,
+      itemsPerPage: 10,
+      sortBy: [{ key: "id", order: "asc" }],
       deletePending: false
     };
   },
@@ -82,27 +86,27 @@ export default {
     headers() {
       return [
         {
-          text: this.$t("Matches.MatchID"),
+          title: this.$t("Matches.MatchID"),
           align: "start",
           sortable: true,
-          value: "id"
+          key: "id"
         },
         {
-          text: this.$t("Matches.Team1"),
-          value: "team1_string"
+          title: this.$t("Matches.Team1"),
+          key: "team1_string"
         },
         {
-          text: this.$t("Matches.Team2"),
-          value: "team2_string"
+          title: this.$t("Matches.Team2"),
+          key: "team2_string"
         },
         {
-          text: this.$t("Matches.Status"),
-          value: "match_status",
+          title: this.$t("Matches.Status"),
+          key: "match_status",
           sortable: false
         },
         {
-          text: this.$t("Matches.Owner"),
-          value: "owner"
+          title: this.$t("Matches.Owner"),
+          key: "owner"
         }
       ];
     },
@@ -111,7 +115,17 @@ export default {
     }
   },
   watch: {
-    options: {
+    page: {
+      async handler() {
+        await this.pageUpdate();
+      }
+    },
+    itemsPerPage: {
+      async handler() {
+        await this.pageUpdate();
+      }
+    },
+    sortBy: {
       async handler() {
         await this.pageUpdate();
       },
@@ -166,13 +180,15 @@ export default {
         this.$route.path == "/mymatches"
           ? await this.GetMyMatches()
           : await this.GetAllMatches();
-      const { sortBy, sortDesc, page, itemsPerPage } = this.options;
+      const sortItem = this.sortBy?.[0];
       if (typeof count == "string") count = [];
-      if (sortBy.length === 1 && sortDesc.length === 1) {
+      if (sortItem?.key) {
+        const sortKey = sortItem.key;
+        const sortDesc = sortItem.order === "desc";
         count = count.sort((a, b) => {
-          const sortA = a[sortBy[0]];
-          const sortB = b[sortBy[0]];
-          if (sortDesc[0]) {
+          const sortA = a[sortKey];
+          const sortB = b[sortKey];
+          if (sortDesc) {
             if (sortA < sortB) return 1;
             if (sortA > sortB) return -1;
             return 0;
@@ -184,8 +200,11 @@ export default {
         });
       }
       this.totalMatches = count.length;
-      if (itemsPerPage > 0) {
-        count = count.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+      if (this.itemsPerPage > 0) {
+        count = count.slice(
+          (this.page - 1) * this.itemsPerPage,
+          this.page * this.itemsPerPage
+        );
       }
       this.matches = await this.pushMatchData(count);
       return;
@@ -199,6 +218,9 @@ export default {
       this.isThereCancelledMatches = false;
       await this.pageUpdate();
     }
+  },
+  async mounted() {
+    await this.pageUpdate();
   }
 };
 </script>

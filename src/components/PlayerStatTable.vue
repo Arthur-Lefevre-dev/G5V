@@ -39,7 +39,7 @@
             align="center"
           >
             <v-btn
-              small
+              size="small"
               color="secondary"
               :href="apiUrl + '/demo/' + mapStats[index].demo"
             >
@@ -55,15 +55,14 @@
           ></div>
         </v-container>
         <v-data-table
-          item-key="id"
+          item-value="id"
           class="elevation-1"
           :items-per-page="12"
           :loading="isLoading"
           :loading-text="$t('misc.LoadText')"
           :headers="headers"
           :items="playerMapStats"
-          sort-by="kills"
-          sort-desc
+          :sort-by="[{ key: 'kills', order: 'desc' }]"
           ref="PlayerStats"
           group-by="Team"
           show-group-by
@@ -78,20 +77,21 @@
           <template v-slot:item.Team="{ item }">
             {{ item.Team.slice(2) }}
           </template>
-          <template v-slot:expanded-item="{ item }" class="text-center">
-            <td :colspan="headers.length">
-              <v-data-table
-                item-key="id"
-                class="elevation-1"
-                :headers="additionalHeaders"
-                hide-default-footer
-                dense
-                :key="item.id"
-                :items="[item]"
-                disable-sort
-                :colspan="headers.length"
-              />
-            </td>
+          <template v-slot:expanded-row="{ columns, item }">
+            <tr>
+              <td :colspan="columns.length">
+                <v-data-table
+                  item-value="id"
+                  class="elevation-1"
+                  :headers="additionalHeaders"
+                  hide-default-footer
+                  density="compact"
+                  :key="item.id"
+                  :items="[item]"
+                  disable-sort
+                />
+              </td>
+            </tr>
           </template>
         </v-data-table>
       </v-container>
@@ -117,7 +117,7 @@ export default {
       allowRefresh: false,
       timeoutId: -1,
       isFinished: false,
-      apiUrl: process.env?.VUE_APP_G5V_API_URL || "/api"
+      apiUrl: process.env.VUE_APP_G5V_API_URL || "/api"
     };
   },
   created() {
@@ -127,55 +127,55 @@ export default {
     headers() {
       return [
         {
-          text: this.$t("PlayerStats.User"),
+          title: this.$t("PlayerStats.User"),
           align: "start",
           sortable: true,
-          value: "name",
+          key: "name",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.Kills"),
-          value: "kills",
+          title: this.$t("PlayerStats.Kills"),
+          key: "kills",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.Deaths"),
-          value: "deaths",
+          title: this.$t("PlayerStats.Deaths"),
+          key: "deaths",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.Assists"),
-          value: "assists",
+          title: this.$t("PlayerStats.Assists"),
+          key: "assists",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.FlashbangAssists"),
-          value: "flashbang_assists",
+          title: this.$t("PlayerStats.FlashbangAssists"),
+          key: "flashbang_assists",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.EnemyFlash"),
-          value: "enemies_flashed",
+          title: this.$t("PlayerStats.EnemyFlash"),
+          key: "enemies_flashed",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.FriendFlash"),
-          value: "friendlies_flashed",
+          title: this.$t("PlayerStats.FriendFlash"),
+          key: "friendlies_flashed",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.Rating"),
-          value: "rating",
+          title: this.$t("PlayerStats.Rating"),
+          key: "rating",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.TeamName"),
-          value: "Team",
-          align: "right"
+          title: this.$t("PlayerStats.TeamName"),
+          key: "Team",
+          align: "end"
         },
         {
-          text: "",
-          value: "data-table-expand",
+          title: "",
+          key: "data-table-expand",
           groupable: false,
           align: "end"
         }
@@ -184,52 +184,52 @@ export default {
     additionalHeaders() {
       return [
         {
-          text: this.$t("PlayerStats.Suicides"),
-          value: "suicides"
+          title: this.$t("PlayerStats.Suicides"),
+          key: "suicides"
         },
         {
-          text: this.$t("PlayerStats.ADR"),
-          value: "adr"
+          title: this.$t("PlayerStats.ADR"),
+          key: "adr"
         },
         {
-          text: this.$t("PlayerStats.UtilDamage"),
-          value: "util_damage"
+          title: this.$t("PlayerStats.UtilDamage"),
+          key: "util_damage"
         },
         {
-          text: this.$t("PlayerStats.KnifeKills"),
-          value: "knife_kills"
+          title: this.$t("PlayerStats.KnifeKills"),
+          key: "knife_kills"
         },
         {
-          text: this.$t("PlayerStats.BombPlants"),
-          value: "bomb_plants"
+          title: this.$t("PlayerStats.BombPlants"),
+          key: "bomb_plants"
         },
         {
-          text: this.$t("PlayerStats.BombDefuses"),
-          value: "bomb_defuses"
+          title: this.$t("PlayerStats.BombDefuses"),
+          key: "bomb_defuses"
         },
         {
-          text: this.$t("PlayerStats.Headshot") + "%",
-          value: "hsp"
+          title: this.$t("PlayerStats.Headshot") + "%",
+          key: "hsp"
         },
         {
-          text: this.$t("PlayerStats.KDR"),
-          value: "kdr"
+          title: this.$t("PlayerStats.KDR"),
+          key: "kdr"
         },
         {
-          text: this.$t("PlayerStats.FPR"),
-          value: "fpr"
+          title: this.$t("PlayerStats.FPR"),
+          key: "fpr"
         },
         {
-          text: this.$t("PlayerStats.KAST"),
-          value: "kast"
+          title: this.$t("PlayerStats.KAST"),
+          key: "kast"
         },
         {
-          text: this.$t("PlayerStats.ContribScore"),
-          value: "contribution_score"
+          title: this.$t("PlayerStats.ContribScore"),
+          key: "contribution_score"
         },
         {
-          text: this.$t("PlayerStats.MVP"),
-          value: "mvp"
+          title: this.$t("PlayerStats.MVP"),
+          key: "mvp"
         }
       ];
     }
@@ -298,16 +298,12 @@ export default {
                   ? matchData.team1_string
                   : matchData.team2_string;
             }
-            this.$set(
-              this.playerstats[idx][pIdx],
-              "Team",
-              teamNum + " " + newName
-            );
-            this.$set(this.playerstats[idx][pIdx], "rating", getRating);
-            this.$set(this.playerstats[idx][pIdx], "adr", adr);
-            this.$set(this.playerstats[idx][pIdx], "hsp", hsp);
-            this.$set(this.playerstats[idx][pIdx], "kdr", kdr);
-            this.$set(this.playerstats[idx][pIdx], "fpr", fpr);
+            this.playerstats[idx][pIdx].Team = teamNum + " " + newName;
+            this.playerstats[idx][pIdx].rating = getRating;
+            this.playerstats[idx][pIdx].adr = adr;
+            this.playerstats[idx][pIdx].hsp = hsp;
+            this.playerstats[idx][pIdx].kdr = kdr;
+            this.playerstats[idx][pIdx].fpr = fpr;
           }
         });
       });
@@ -367,10 +363,10 @@ export default {
       if (typeof serverResponse == "string") return;
       await serverResponse.forEach((singleMapStat, index) => {
         if (!this.mapStats[index]) {
-          this.$set(this.mapStats, index, {});
+          this.mapStats[index] = {};
         }
 
-        this.$set(this.mapStats[index], 'score', "Score: " +
+        this.mapStats[index].score = "Score: " +
           singleMapStat.team1_score +
           " " +
           this.GetScoreSymbol(
@@ -378,13 +374,13 @@ export default {
             singleMapStat.team2_score
           ) +
           " " +
-          singleMapStat.team2_score);
-        this.$set(this.mapStats[index], 'start', "Map Start: " + new Date(singleMapStat.start_time).toLocaleString());
-        this.$set(this.mapStats[index], 'end', singleMapStat.end_time == null ?
+          singleMapStat.team2_score;
+        this.mapStats[index].start = "Map Start: " + new Date(singleMapStat.start_time).toLocaleString();
+        this.mapStats[index].end = singleMapStat.end_time == null ?
           null :
-          "Map End: " + new Date(singleMapStat.end_time).toLocaleString());
-        this.$set(this.mapStats[index], 'map', "Map: " + singleMapStat.map_name);
-        this.$set(this.mapStats[index], 'demo', singleMapStat.demoFile);
+          "Map End: " + new Date(singleMapStat.end_time).toLocaleString();
+        this.mapStats[index].map = "Map: " + singleMapStat.map_name;
+        this.mapStats[index].demo = singleMapStat.demoFile;
       });
       if (matchData.end_time != null) this.isFinished = true;
     }

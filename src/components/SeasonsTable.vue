@@ -1,18 +1,17 @@
 <template>
   <v-container fluid>
     <v-data-table
-      item-key="id"
+      item-value="id"
       class="elevation-1"
       :loading="isLoading"
       :loading-text="$t('misc.LoadText')"
       :headers="headers"
       :items="seasons"
-      :sort-by="['id']"
-      sort-desc
+      :sort-by="[{ key: 'id', order: 'desc' }]"
       ref="SeasonsTable"
     >
       <template v-slot:top>
-        <v-toolbar flat>
+        <v-toolbar flat class="g5-table-toolbar">
           {{ $t("Seasons.Title") }}
           <v-spacer />
           <v-btn
@@ -68,7 +67,7 @@
       <v-sheet class="text-center" height="200px">
         <v-btn
           class="mt-6"
-          text
+          variant="text"
           color="success"
           @click="
             responseSheet = !responseSheet;
@@ -85,7 +84,7 @@
     <v-dialog v-model="deleteDialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ $t("Seasons.DeleteConfirmation") }}
           </span>
         </v-card-title>
@@ -94,10 +93,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="deleteDialog = false">
+          <v-btn color="blue-darken-1" variant="text" @click="deleteDialog = false">
             {{ $t("misc.No") }}
           </v-btn>
-          <v-btn color="red darken-1" text @click="deleteSeasonConfirm()">
+          <v-btn color="red-darken-1" variant="text" @click="deleteSeasonConfirm()">
             {{ $t("misc.Yes") }}
           </v-btn>
         </v-card-actions>
@@ -106,12 +105,11 @@
     <v-dialog
       v-model="newImportDialog"
       transition="dialog-bottom-transition"
-      hide-overlay
       max-width="600px"
     >
       <v-card>
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ $t("Seasons.Import") }}
           </span>
         </v-card-title>
@@ -141,25 +139,23 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="red darken-1" text @click="newImportDialog = false">
+          <v-btn color="red-darken-1" variant="text" @click="newImportDialog = false">
             {{ $t("misc.Cancel") }}
           </v-btn>
-          <v-btn color="blue darken-1" text @click="importChallongeSeason()">
+          <v-btn color="blue-darken-1" variant="text" @click="importChallongeSeason()">
             {{ $t("misc.Import") }}
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
     <v-dialog
-      shake
       v-model="newDialog"
       fullscreen
-      hide-overlay
       transition="dialog-bottom-transition"
     >
-      <v-card color="lighten-4">
+      <v-card color="surface">
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ formTitle }}
           </span>
         </v-card-title>
@@ -185,10 +181,10 @@
                       :close-on-content-click="false"
                       min-width="290px"
                     >
-                      <template v-slot:activator="{ on }">
+                      <template v-slot:activator="{ props }">
                         <v-text-field
                           v-model="dateRangeText"
-                          v-on="on"
+                          v-bind="props"
                           readonly
                           :label="$t('Seasons.DateTitle')"
                           :rules="[
@@ -221,7 +217,7 @@
                   </v-col>
                   <v-radio-group
                     v-model="seasonDefaults.maps_to_win"
-                    row
+                    inline
                     class="justify-center"
                   >
                     <v-col lg="3" sm="12" align-self="center">
@@ -306,8 +302,8 @@
                   <strong>
                     {{ $t("CreateMatch.FormMapPool") }}
                     <v-tooltip bottom>
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-btn v-bind="attrs" v-on="on" x-small fab icon>
+                      <template v-slot:activator="{ props }">
+                        <v-btn v-bind="props" size="x-small" icon>
                           <v-icon>mdi-information</v-icon>
                         </v-btn>
                       </template>
@@ -345,7 +341,7 @@
                       :hint="$t('Team.AuthHint')"
                       multiple
                       chips
-                      deletable-chips
+                      closable-chips
                     />
                   </v-col>
                 </v-row>
@@ -361,7 +357,7 @@
                 <v-row class="justify-center">
                   <v-radio-group
                     v-model="seasonDefaults.side_type"
-                    row
+                    inline
                     class="justify-center"
                   >
                     <v-col lg="4" sm="12" align-self="center">
@@ -403,7 +399,7 @@
                       }}
                     </v-col>
                     <v-radio-group
-                      row
+                      inline
                       v-model="seasonDefaults.map_sides[index]"
                     >
                       <v-col lg="12" sm="12" align-self="center">
@@ -436,7 +432,7 @@
                       :hint="$t('Seasons.CvarHint')"
                       multiple
                       chips
-                      deletable-chips
+                      closable-chips
                     />
                   </v-col>
                 </v-row>
@@ -446,10 +442,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="darken-1" text @click="newDialog = false">
+          <v-btn variant="text" @click="newDialog = false">
             {{ $t("misc.Cancel") }}
           </v-btn>
-          <v-btn color="primary" text @click="saveNewSeason()">
+          <v-btn color="primary" variant="text" @click="saveNewSeason()">
             {{ $t("misc.Save") }}
           </v-btn>
         </v-card-actions>
@@ -459,6 +455,7 @@
 </template>
 
 <script>
+import { resolveMapList } from "@/utils/maps.js";
 export default {
   props: {
     user: Object
@@ -557,7 +554,9 @@ export default {
         if (this.$route.path == "/myseasons") res = await this.GetMySeasons();
         else res = await this.GetAllSeasons();
         if (typeof res == "string") res = [];
-        this.MapList = await this.GetUserEnabledMapList(this.user.id);
+        this.MapList = resolveMapList(
+          await this.GetUserEnabledMapList(this.user.id)
+        );
         res.forEach(async season => {
           const ownerRes = await this.GetUserData(season.user_id);
           season.owner = ownerRes.name;
@@ -780,30 +779,30 @@ export default {
     headers() {
       return [
         {
-          text: this.$t("Seasons.ID"),
+          title: this.$t("Seasons.ID"),
           align: "start",
           sortable: true,
-          value: "id"
+          key: "id"
         },
         {
-          text: this.$t("Seasons.Name"),
-          value: "name"
+          title: this.$t("Seasons.Name"),
+          key: "name"
         },
         {
-          text: this.$t("Seasons.StartTitle"),
-          value: "start_date"
+          title: this.$t("Seasons.StartTitle"),
+          key: "start_date"
         },
         {
-          text: this.$t("Seasons.EndTitle"),
-          value: "end_date"
+          title: this.$t("Seasons.EndTitle"),
+          key: "end_date"
         },
         {
-          text: this.$t("Matches.Owner"),
-          value: "owner"
+          title: this.$t("Matches.Owner"),
+          key: "owner"
         },
         {
-          text: "",
-          value: "actions",
+          title: "",
+          key: "actions",
           sortable: false
         }
       ];

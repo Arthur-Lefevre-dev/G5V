@@ -133,10 +133,10 @@
   </v-card>
 </template>
 <script>
-import MatchesTable from "@/components/MatchesTableNoLimits";
-import PlayerStats from "@/components/PlayerStatInfo";
-import MapList from "@/components/NewMap";
-import PasswordResetDialog from "@/components/PasswordResetDialog";
+import MatchesTable from "@/components/MatchesTableNoLimits.vue";
+import PlayerStats from "@/components/PlayerStatInfo.vue";
+import MapList from "@/components/NewMap.vue";
+import PasswordResetDialog from "@/components/PasswordResetDialog.vue";
 
 export default {
   name: "User",

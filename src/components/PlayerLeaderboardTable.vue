@@ -1,21 +1,22 @@
 <template>
   <v-container class="PlayerLeaderboard" fluid>
     <v-data-table
-      item-key="steamId"
+      item-value="steamId"
       class="elevation-1"
       :loading="isLoading"
       :loading-text="$t('misc.LoadText')"
       :headers="headers"
       :items="players"
-      :sort-by="['wins', 'kills']"
-      :sort-desc="['wins', 'kills']"
-      multi-sort
+      :sort-by="[
+        { key: 'wins', order: 'desc' },
+        { key: 'kills', order: 'desc' }
+      ]"
       ref="PlayerLeaderboardTable"
       :expanded="[]"
       show-expand
     >
       <template v-slot:top>
-        <v-toolbar flat>
+        <v-toolbar flat class="g5-table-toolbar">
           {{ $t("misc.PLeader") }}
         </v-toolbar>
       </template>
@@ -24,20 +25,21 @@
           {{ item.name }}
         </router-link>
       </template>
-      <template v-slot:expanded-item="{ item }" class="text-center">
-        <td :colspan="headers.length">
-          <v-data-table
-            item-key="steamId"
-            class="elevation-1"
-            :headers="additionalHeaders"
-            hide-default-footer
-            dense
-            :key="item.steamId"
-            :items="[item]"
-            disable-sort
-            :colspan="headers.length"
-          />
-        </td>
+      <template v-slot:expanded-row="{ columns, item }">
+        <tr>
+          <td :colspan="columns.length">
+            <v-data-table
+              item-value="steamId"
+              class="elevation-1"
+              :headers="additionalHeaders"
+              hide-default-footer
+              density="compact"
+              :key="item.steamId"
+              :items="[item]"
+              disable-sort
+            />
+          </td>
+        </tr>
       </template>
     </v-data-table>
   </v-container>
@@ -62,50 +64,50 @@ export default {
     headers() {
       return [
         {
-          text: this.$t("PlayerStats.User"),
+          title: this.$t("PlayerStats.User"),
           align: "start",
           sortable: true,
-          value: "name",
+          key: "name",
           groupable: false
         },
         {
-          text: this.$t("misc.TWins"),
+          title: this.$t("misc.TWins"),
           sortable: true,
-          value: "wins",
+          key: "wins",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.Kills"),
-          value: "kills",
+          title: this.$t("PlayerStats.Kills"),
+          key: "kills",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.Deaths"),
-          value: "deaths",
+          title: this.$t("PlayerStats.Deaths"),
+          key: "deaths",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.Assists"),
-          value: "assists",
+          title: this.$t("PlayerStats.Assists"),
+          key: "assists",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.FlashbangAssists"),
-          value: "fba",
+          title: this.$t("PlayerStats.FlashbangAssists"),
+          key: "fba",
           groupable: false
         },
         {
-          text: this.$t("PlayerStats.TotalRoundsPlayed"),
-          value: "trp"
+          title: this.$t("PlayerStats.TotalRoundsPlayed"),
+          key: "trp"
         },
         {
-          text: this.$t("PlayerStats.Rating"),
-          value: "average_rating",
+          title: this.$t("PlayerStats.Rating"),
+          key: "average_rating",
           groupable: false
         },
         {
-          text: "",
-          value: "data-table-expand",
+          title: "",
+          key: "data-table-expand",
           groupable: false,
           align: "end"
         }
@@ -114,40 +116,40 @@ export default {
     additionalHeaders() {
       return [
         {
-          text: this.$t("PlayerStats.ADR"),
-          value: "adr"
+          title: this.$t("PlayerStats.ADR"),
+          key: "adr"
         },
         {
-          text: this.$t("PlayerStats.Headshot") + "%",
-          value: "hsp"
+          title: this.$t("PlayerStats.Headshot") + "%",
+          key: "hsp"
         },
         {
-          text: this.$t("PlayerStats.5kill"),
-          value: "k5"
+          title: this.$t("PlayerStats.5kill"),
+          key: "k5"
         },
         {
-          text: this.$t("PlayerStats.4kill"),
-          value: "k4"
+          title: this.$t("PlayerStats.4kill"),
+          key: "k4"
         },
         {
-          text: this.$t("PlayerStats.3kill"),
-          value: "k3"
+          title: this.$t("PlayerStats.3kill"),
+          key: "k3"
         },
         {
-          text: this.$t("PlayerStats.2kill"),
-          value: "k2"
+          title: this.$t("PlayerStats.2kill"),
+          key: "k2"
         },
         {
-          text: this.$t("PlayerStats.1kill"),
-          value: "k1"
+          title: this.$t("PlayerStats.1kill"),
+          key: "k1"
         },
         {
-          text: this.$t("PlayerStats.v5"),
-          value: "v5"
+          title: this.$t("PlayerStats.v5"),
+          key: "v5"
         },
         {
-          text: this.$t("PlayerStats.v4"),
-          value: "v4"
+          title: this.$t("PlayerStats.v4"),
+          key: "v4"
         }
       ];
     }

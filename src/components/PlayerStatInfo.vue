@@ -2,7 +2,7 @@
   <v-row>
     <v-col cols="12" sm="12" md="12" lg="2">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("PlayerStats.Kills") }}
         </v-card-title>
         <v-skeleton-loader
@@ -10,7 +10,7 @@
           :loading="isKillsLoading"
           type="text"
         >
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ totalKills }}
           </v-card-text>
         </v-skeleton-loader>
@@ -18,7 +18,7 @@
     </v-col>
     <v-col cols="12" sm="12" md="12" lg="2">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("PlayerStats.Deaths") }}
         </v-card-title>
         <v-skeleton-loader
@@ -26,7 +26,7 @@
           :loading="isDeathsLoading"
           type="text"
         >
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ totalDeaths }}
           </v-card-text>
         </v-skeleton-loader>
@@ -34,11 +34,11 @@
     </v-col>
     <v-col cols="12" sm="12" md="12" lg="2">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("PlayerStats.Headshot") }}
         </v-card-title>
         <v-skeleton-loader class="mx-auto" :loading="isHSPLoading" type="text">
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ headShotPercentage }}%
           </v-card-text>
         </v-skeleton-loader>
@@ -46,7 +46,7 @@
     </v-col>
     <v-col cols="12" sm="12" md="12" lg="3">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("PlayerStats.RoundsPlayed") }}
         </v-card-title>
         <v-skeleton-loader
@@ -54,7 +54,7 @@
           :loading="isTotalRoundsLoading"
           type="text"
         >
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ totalRoundsPlayed }}
           </v-card-text>
         </v-skeleton-loader>
@@ -62,7 +62,7 @@
     </v-col>
     <v-col cols="12" sm="12" md="12" lg="2">
       <v-card elevation="3">
-        <v-card-title class="headline text--secondary">
+        <v-card-title class="headline text-medium-emphasis">
           {{ $t("PlayerStats.Rating") }}
         </v-card-title>
         <v-skeleton-loader
@@ -70,7 +70,7 @@
           :loading="isRatingLoading"
           type="text"
         >
-          <v-card-text class="headline text--primary">
+          <v-card-text class="headline text-primary">
             {{ averageRating }}
           </v-card-text>
         </v-skeleton-loader>

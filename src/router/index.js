@@ -1,194 +1,122 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-Vue.use(VueRouter);
+import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: () => import(/* webpackChunkName: "Home" */ "../views/Home.vue")
+    component: () => import("../views/Home.vue")
   },
   {
     path: "/matches",
     name: "Matches",
-    component: () =>
-      import(/* webpackChunkName: "Home" */ "../views/Matches.vue")
+    component: () => import("../views/Matches.vue")
   },
   {
     path: "/teams",
     name: "Teams",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "Teams" */ "../views/Teams.vue"),
+    component: () => import("../views/Teams.vue"),
     children: [
       {
-        path: "/create",
+        path: "create",
         name: "Create Team",
-        component: () =>
-          import(/* webpackChunkName: "Teams" */ "../views/Team.vue")
+        component: () => import("../views/Team.vue")
       }
     ]
   },
   {
     path: "/mymatches",
     name: "My Matches",
-    component: () =>
-      import(/* webpackChunkName: "Home" */ "../views/Matches.vue")
+    component: () => import("../views/Matches.vue")
   },
   {
     path: "/myteams",
     name: "My Teams",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "Teams" */ "../views/Teams.vue")
+    component: () => import("../views/Teams.vue")
   },
   {
     path: "/myseasons",
     name: "My Seasons",
-    component: () =>
-      import(/* webpackChunkName: "Season" */ "../views/Seasons.vue")
+    component: () => import("../views/Seasons.vue")
   },
   {
     path: "/myservers",
     name: "My Servers",
-    component: () =>
-      import(/* webpackChunkName: "Server" */ "../views/Servers.vue")
+    component: () => import("../views/Servers.vue")
   },
   {
     path: "/teams/:id",
     name: "Team",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "Team" */ "../views/Team.vue")
+    component: () => import("../views/Team.vue")
   },
   {
     path: "/match/create",
     name: "New Match",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "Match" */ "../views/CreateMatch.vue")
-    //children: [{ path: "/create", component: MatchCreate }]
+    component: () => import("../views/CreateMatch.vue")
   },
   {
     path: "/match/:id",
     name: "Match",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "Match" */ "../views/Match.vue")
-    //children: [{ path: "/create", component: MatchCreate }]
+    component: () => import("../views/Match.vue")
   },
   {
     path: "/user/:id",
     name: "User",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "User" */ "../views/User.vue")
-    //children: [{ path: "/create", component: MatchCreate }]
+    component: () => import("../views/User.vue")
   },
   {
     path: "/user",
     name: "My User",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "User" */ "../views/User.vue")
-    //children: [{ path: "/create", component: MatchCreate }]
+    component: () => import("../views/User.vue")
   },
   {
     path: "/seasons",
     name: "Seasons",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "Season" */ "../views/Seasons.vue")
+    component: () => import("../views/Seasons.vue")
   },
   {
     path: "/season/:id",
     name: "Season",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "Season" */ "../views/Season.vue")
+    component: () => import("../views/Season.vue")
+  },
+  {
+    path: "/tournament/create",
+    name: "CreateTournament",
+    component: () => import("../views/CreateTournament.vue")
   },
   {
     path: "/servers",
     name: "Servers",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "Server" */ "../views/Servers.vue")
+    component: () => import("../views/Servers.vue")
   },
   {
     path: "/metrics",
     name: "Metrics",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "Metrics" */ "../views/Metrics.vue")
+    component: () => import("../views/Metrics.vue")
   },
   {
     path: "/leaderboard",
     name: "Leaderboard",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(
-        /* webpackChunkName: "Leaderboards" */ "../views/PlayerLeaderboard.vue"
-      )
+    component: () => import("../views/PlayerLeaderboard.vue")
   },
-  // TODO: Fix this broken route? Child doesn't load...
   {
     path: "/leaderboard/teams",
     name: "TeamBoard",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(
-        /* webpackChunkName: "Leaderboards" */ "../views/TeamLeaderboard.vue"
-      )
+    component: () => import("../views/TeamLeaderboard.vue")
   },
   {
     path: "/leaderboard/:seasonid",
     name: "SeasonPlayerBoard",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "Match" */ "../views/PlayerLeaderboard.vue")
-    //children: [{ path: "/create", component: MatchCreate }]
+    component: () => import("../views/PlayerLeaderboard.vue")
   },
   {
     path: "/leaderboard/teams/:seasonid",
     name: "SeasonTeamBoard",
-    // route level code-splitting
-    // this generates a separate chunk (teams.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(
-        /* webpackChunkName: "Leaderboards" */ "../views/TeamLeaderboard.vue"
-      )
+    component: () => import("../views/TeamLeaderboard.vue")
   }
 ];
 
-const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 });
 

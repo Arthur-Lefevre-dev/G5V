@@ -1,11 +1,11 @@
 <template>
   <v-container class="admin-button">
     <v-menu bottom offset-y open-on-hover>
-      <template v-slot:activator="{ on, attrs }">
+      <template v-slot:activator="{ props }">
         <v-btn
-          class="primary darken-1"
-          v-bind="attrs"
-          v-on="on"
+          color="primary"
+          variant="flat"
+          v-bind="props"
           :loading="isLoading"
           :disabled="isLoading"
         >
@@ -34,7 +34,7 @@
         <v-sheet class="text-center" height="200px">
           <v-btn
             class="mt-6"
-            text
+            variant="text"
             color="success"
             @click="
               responseSheet = !responseSheet;
@@ -53,16 +53,16 @@
     <v-dialog v-model="cancelDialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ $t("MatchAdmin.CancelMatchConfirm") }}
           </span>
         </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="cancelDialog = false">
+          <v-btn color="blue-darken-1" variant="text" @click="cancelDialog = false">
             {{ $t("misc.No") }}
           </v-btn>
-          <v-btn color="red darken-1" text @click="cancelCurrentMatch()">
+          <v-btn color="red-darken-1" variant="text" @click="cancelCurrentMatch()">
             {{ $t("misc.Yes") }}
           </v-btn>
         </v-card-actions>
@@ -71,7 +71,7 @@
     <v-dialog v-model="restartDialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ $t("MatchAdmin.MatchRestartInfo") }}
           </span>
         </v-card-title>
@@ -79,16 +79,16 @@
           <v-spacer></v-spacer>
           <v-btn
             :disabled="isLoading"
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="restartDialog = false"
           >
             {{ $t("misc.No") }}
           </v-btn>
           <v-btn
             :disabled="isLoading"
-            color="red darken-1"
-            text
+            color="red-darken-1"
+            variant="text"
             @click="sendRestartMatch()"
           >
             {{ $t("misc.Yes") }}
@@ -99,7 +99,7 @@
     <v-dialog v-model="addDialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             Add Player to Team or Spectator
           </span>
         </v-card-title>
@@ -138,19 +138,19 @@
           </v-form>
         </v-card-text>
         <v-card-actions>
-          <v-btn color="darken-1" text @click="addDialog = false">
+          <v-btn variant="text" @click="addDialog = false">
             {{ $t("misc.Cancel") }}
           </v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="darken-1" text @click="addPlayerToServer('spec')">
+          <v-btn variant="text" @click="addPlayerToServer('spec')">
             {{ $t("MatchAdmin.AddToSpec") }}
           </v-btn>
-          <v-btn color="blue darken-1" text @click="addPlayerToServer('team1')">
+          <v-btn color="blue-darken-1" variant="text" @click="addPlayerToServer('team1')">
             {{ $t("MatchAdmin.AddTeam1") }}
           </v-btn>
           <v-btn
-            color="yellow darken-1"
-            text
+            color="yellow-darken-1"
+            variant="text"
             @click="addPlayerToServer('team2')"
           >
             {{ $t("MatchAdmin.AddTeam2") }}
@@ -161,7 +161,7 @@
     <v-dialog v-model="forfeitDialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ $t("MatchAdmin.ForfeitConfirm") }}
           </span>
         </v-card-title>
@@ -177,8 +177,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
-            color="darken-1"
-            text
+            variant="text"
             @click="forfeitDialog = false"
             :disabled="isLoading"
             :loading="isLoading"
@@ -186,8 +185,8 @@
             {{ $t("misc.Cancel") }}
           </v-btn>
           <v-btn
-            color="blue darken-1"
-            text
+            color="blue-darken-1"
+            variant="text"
             @click="forfeitCurrentMatch(1)"
             :disabled="isLoading"
             :loading="isLoading"
@@ -195,8 +194,8 @@
             {{ $t("MatchAdmin.ForfeitWinner1") }}
           </v-btn>
           <v-btn
-            color="yellow darken-1"
-            text
+            color="yellow-darken-1"
+            variant="text"
             @click="forfeitCurrentMatch(2)"
             :disabled="isLoading"
             :loading="isLoading"
@@ -209,7 +208,7 @@
     <v-dialog v-model="rconDialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ $t("MatchAdmin.RCONDialog") }}
           </span>
         </v-card-title>
@@ -234,10 +233,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="darken-1" text @click="rconDialog = false">
+          <v-btn variant="text" @click="rconDialog = false">
             {{ $t("misc.Cancel") }}
           </v-btn>
-          <v-btn color="primary darken-1" text @click="sendRconCommand()">
+          <v-btn color="primary" variant="text" @click="sendRconCommand()">
             {{ $t("MatchAdmin.SendRCON") }}
           </v-btn>
         </v-card-actions>
@@ -246,7 +245,7 @@
     <v-dialog v-model="backupDialog" persistent max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ $t("MatchAdmin.LoadBackupFile") }}
           </span>
         </v-card-title>
@@ -270,19 +269,19 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="darken-1" text @click="backupDialog = false">
+          <v-btn variant="text" @click="backupDialog = false">
             {{ $t("misc.Cancel") }}
           </v-btn>
-          <v-btn color="primary darken-1" text @click="sendBackupRestore()">
+          <v-btn color="primary" variant="text" @click="sendBackupRestore()">
             {{ $t("MatchAdmin.Restore") }}
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-    <v-dialog shake v-model="serverChangeDialog" persistent max-width="600px">
-      <v-card color="lighten-4">
+    <v-dialog v-model="serverChangeDialog" persistent max-width="600px">
+      <v-card color="surface">
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ $t("MatchAdmin.ChangeServer") }}
           </span>
         </v-card-title>
@@ -299,7 +298,7 @@
                   <v-select
                     v-model="selectedServer"
                     :items="servers"
-                    item-text="display_name"
+                    item-title="display_name"
                     item-value="id"
                     :rules="[v => !!v || $t('misc.Required')]"
                     :label="$t('CreateMatch.ServerLabel')"
@@ -323,10 +322,10 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="darken-1" text @click="serverChangeDialog = false">
+          <v-btn variant="text" @click="serverChangeDialog = false">
             {{ $t("misc.Cancel") }}
           </v-btn>
-          <v-btn color="red darken-1" text @click="sendServerChange()">
+          <v-btn color="red-darken-1" variant="text" @click="sendServerChange()">
             {{ $t("misc.Change") }}
           </v-btn>
         </v-card-actions>

@@ -1,18 +1,17 @@
 <template>
   <v-container class="TeamLeaderboard" fluid>
     <v-data-table
-      item-key="index"
+      item-value="index"
       class="elevation-1"
       :loading="isLoading"
       :loading-text="$t('misc.LoadText')"
       :headers="headers"
       :items="teams"
-      :sort-by="'wins'"
-      :sort-desc="['wins']"
+      :sort-by="[{ key: 'wins', order: 'desc' }]"
       ref="TeamLeaderboardTable"
     >
       <template v-slot:top>
-        <v-toolbar flat>
+        <v-toolbar flat class="g5-table-toolbar">
           {{ $t("Leaderboard.TTitle") }}
         </v-toolbar>
       </template>
@@ -39,26 +38,26 @@ export default {
     headers() {
       return [
         {
-          text: this.$t("Leaderboard.TName"),
+          title: this.$t("Leaderboard.TName"),
           align: "start",
           sortable: true,
-          value: "name",
+          key: "name",
           groupable: false
         },
         {
-          text: this.$t("Leaderboard.TWin"),
+          title: this.$t("Leaderboard.TWin"),
           sortable: true,
-          value: "wins",
+          key: "wins",
           groupable: false
         },
         {
-          text: this.$t("Leaderboard.TLosses"),
-          value: "losses",
+          title: this.$t("Leaderboard.TLosses"),
+          key: "losses",
           groupable: false
         },
         {
-          text: this.$t("Leaderboard.TDiff"),
-          value: "rounddiff",
+          title: this.$t("Leaderboard.TDiff"),
+          key: "rounddiff",
           groupable: false
         }
       ];

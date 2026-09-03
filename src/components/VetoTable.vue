@@ -4,10 +4,10 @@
       :headers="headers"
       :items="vetoInfo"
       class="elevation-1"
-      :sort-by="['id']"
+      :sort-by="[{ key: 'id', order: 'asc' }]"
       hide-default-footer
       :no-data-text="$t('Veto.NoData')"
-      :expanded.sync="expanded"
+      v-model:expanded="expanded"
       show-expand
     >
       <template v-slot:item.map="{ item }">
@@ -45,33 +45,31 @@
       </template>
 
       <template
-        v-slot:[`item.data-table-expand`]="{ item, isExpanded, expand }"
+        v-slot:[`item.data-table-expand`]="{ item, internalItem, isExpanded, toggleExpand }"
       >
         <v-icon
           v-if="item.side"
-          :class="[
-            'v-data-table__expand-icon',
-            { 'v-data-table__expand-icon--active': isExpanded }
-          ]"
-          @click.stop="expand(!isExpanded)"
-          >$expand</v-icon
+          @click.stop="toggleExpand(internalItem)"
         >
+          {{ isExpanded ? "mdi-chevron-up" : "mdi-chevron-down" }}
+        </v-icon>
       </template>
 
-      <template v-slot:expanded-item="{ item, headers }">
-        <td :colspan="headers.length">
-          <v-data-table
-            item-key="id"
-            class="elevation-1"
-            :headers="additionalHeaders"
-            hide-default-footer
-            dense
-            :key="item.id"
-            :items="[item]"
-            disable-sort
-            :colspan="headers.length"
-          />
-        </td>
+      <template v-slot:expanded-row="{ columns, item }">
+        <tr>
+          <td :colspan="columns.length">
+            <v-data-table
+              item-value="id"
+              class="elevation-1"
+              :headers="additionalHeaders"
+              hide-default-footer
+              density="compact"
+              :key="item.id"
+              :items="[item]"
+              disable-sort
+            />
+          </td>
+        </tr>
       </template>
     </v-data-table>
   </v-container>
@@ -83,9 +81,6 @@ let vetoSideInformation;
 export default {
   props: {
     match_id: Number
-  },
-  sse: {
-    cleanup: true
   },
   data() {
     return {
@@ -108,7 +103,6 @@ export default {
   },
   methods: {
     async useStreamOrStaticData() {
-      // Template will contain v-rows/etc like on main Team page.
       let matchData = await this.GetMatchData(this.match_id);
       if (matchData.end_time == null) this.getStreamedVetoInfo();
       else this.getVetoInfo();
@@ -119,7 +113,6 @@ export default {
         vetoSideInformation = await this.GetStreamedVetoSidesOfMatch(
           this.match_id
         );
-        // Remove the -1 value.
         this.vetoInfo.pop();
         await vetoInformation.on("vetodata", this.handleVetoInfo).connect();
         await vetoSideInformation
@@ -144,7 +137,6 @@ export default {
           });
         }
       });
-      // Update veto information here.
       let mapStatRes = await this.GetMapStats(this.match_id);
       if (typeof mapStatRes != "string") this.mapStats = mapStatRes;
     },
@@ -185,42 +177,42 @@ export default {
     headers() {
       return [
         {
-          text: this.$t("Veto.TeamHeader"),
+          title: this.$t("Veto.TeamHeader"),
           sortable: false,
           align: "start",
-          value: "team_name"
+          key: "team_name"
         },
         {
-          text: this.$t("Veto.MapHeader"),
+          title: this.$t("Veto.MapHeader"),
           sortable: false,
-          value: "map"
+          key: "map"
         },
         {
-          text: this.$t("Veto.PickBan"),
+          title: this.$t("Veto.PickBan"),
           sortable: false,
-          value: "pick_or_veto"
+          key: "pick_or_veto"
         },
         {
-          text: "",
-          value: "data-table-expand"
+          title: "",
+          key: "data-table-expand"
         }
       ];
     },
     additionalHeaders() {
       return [
         {
-          text: this.$t("Veto.TeamHeader"),
-          value: "team_name_side"
+          title: this.$t("Veto.TeamHeader"),
+          key: "team_name_side"
         },
         {
-          text: this.$t("Veto.MapHeader"),
+          title: this.$t("Veto.MapHeader"),
           sortable: false,
-          value: "map"
+          key: "map"
         },
         {
-          text: this.$t("Veto.SidePick"),
+          title: this.$t("Veto.SidePick"),
           sortable: false,
-          value: "side"
+          key: "side"
         }
       ];
     }

@@ -13,7 +13,7 @@
       <img
         :src="item.tag"
         style="border-radius: 15px;"
-        v-if="$vuetify.breakpoint.mdAndUp"
+        v-if="$vuetify.display.mdAndUp"
       />
       <img
         :src="item.tag"
@@ -42,8 +42,8 @@
       </div>
       <div v-else />
       <div>
-        <v-tooltip left>
-          <template v-slot:activator="{ on, attrs }">
+        <v-tooltip location="start">
+          <template v-slot:activator="{ props }">
             <v-icon
               v-if="
                 teamAuth
@@ -52,9 +52,8 @@
                   })
                   .indexOf(item.steamid) == 0
               "
-              color="yellow darken-1"
-              v-bind="attrs"
-              v-on="on"
+              color="yellow-darken-1"
+              v-bind="props"
             >
               mdi-crown
             </v-icon>
@@ -64,37 +63,37 @@
       </div>
     </template>
     <template v-slot:top>
-      <v-toolbar flat>
+        <v-toolbar flat class="g5-table-toolbar">
         <v-toolbar-title
           v-if="
             !(IsAnyAdmin(user) || user.id == teamInfo.owner_id) &&
-              $vuetify.breakpoint.mdAndDown
+              $vuetify.display.mdAndDown
           "
           >{{ teamInfo.name }}</v-toolbar-title
         >
-        <v-toolbar-title v-else-if="$vuetify.breakpoint.mdAndUp">
+        <v-toolbar-title v-else-if="$vuetify.display.mdAndUp">
           {{ teamInfo.name }}
         </v-toolbar-title>
         <v-divider
-          v-if="$vuetify.breakpoint.mdAndUp"
+          v-if="$vuetify.display.mdAndUp"
           class="mx-6"
           inset
           vertical
         />
-        <v-toolbar-title v-if="$vuetify.breakpoint.mdAndUp">
+        <v-toolbar-title v-if="$vuetify.display.mdAndUp">
           {{ teamInfo.tag }}
         </v-toolbar-title>
         <v-divider
-          v-if="$vuetify.breakpoint.mdAndUp"
+          v-if="$vuetify.display.mdAndUp"
           class="mx-6"
           inset
           vertical
         />
-        <v-toolbar-title v-if="$vuetify.breakpoint.mdAndUp">
+        <v-toolbar-title v-if="$vuetify.display.mdAndUp">
           <img :src="get_flag_link(teamInfo)" style="border-radius: 5px;" />
         </v-toolbar-title>
         <v-divider
-          v-if="$vuetify.breakpoint.mdAndUp"
+          v-if="$vuetify.display.mdAndUp"
           class="mx-6"
           inset
           vertical
@@ -109,7 +108,7 @@
           </v-toolbar-title>
         </div>
         <v-divider
-          v-if="$vuetify.breakpoint.mdAndUp"
+          v-if="$vuetify.display.mdAndUp"
           class="mx-6"
           inset
           vertical
@@ -123,7 +122,7 @@
 
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on, attrs }">
+          <template v-slot:activator="{ props }">
             <div
               v-if="
                 IsAnyAdmin(user) ||
@@ -135,9 +134,8 @@
                 :disabled="isDisabled"
                 color="primary"
                 class="mb-2"
-                v-bind="attrs"
-                v-on="on"
-                v-if="$vuetify.breakpoint.mdAndUp"
+                v-bind="props"
+                v-if="$vuetify.display.mdAndUp"
               >
                 {{ formTitle }}
               </v-btn>
@@ -145,10 +143,9 @@
                 :disabled="isDisabled"
                 color="primary"
                 class="mb-2"
-                v-bind="attrs"
-                v-on="on"
+                v-bind="props"
                 v-else
-                x-small
+                size="x-small"
               >
                 {{ formTitle }}
               </v-btn>
@@ -157,7 +154,7 @@
           </template>
           <v-card>
             <v-card-title>
-              <span class="headline">{{ formTitle }}</span>
+              <span class="text-h5">{{ formTitle }}</span>
             </v-card-title>
             <v-card-text>
               <v-container>
@@ -221,25 +218,24 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close">
+              <v-btn color="blue-darken-1" variant="text" @click="close">
                 {{ $t("misc.Cancel") }}
               </v-btn>
-              <v-btn color="blue darken-1" text @click="saveTeamInfo">
+              <v-btn color="blue-darken-1" variant="text" @click="saveTeamInfo">
                 {{ $t("misc.Save") }}
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="authDialog" max-width="500px">
-          <template v-slot:activator="{ on, attrs }">
+          <template v-slot:activator="{ props }">
             <div v-if="IsAnyAdmin(user) || user.id == teamInfo.owner_id">
               <v-btn
                 :disabled="isMembersDisabled"
                 color="secondary"
                 class="mb-2"
-                v-bind="attrs"
-                v-on="on"
-                v-if="$vuetify.breakpoint.mdAndUp"
+                v-bind="props"
+                v-if="$vuetify.display.mdAndUp"
               >
                 {{ memberButtonTitle }}
               </v-btn>
@@ -247,10 +243,9 @@
                 :disabled="isMembersDisabled"
                 color="secondary"
                 class="mb-2"
-                v-bind="attrs"
-                v-on="on"
+                v-bind="props"
                 v-else
-                x-small
+                size="x-small"
               >
                 {{ memberButtonTitle }}
               </v-btn>
@@ -259,7 +254,7 @@
           </template>
           <v-card>
             <v-card-title>
-              <span class="headline">{{ formIndTitle }}</span>
+              <span class="text-h5">{{ formIndTitle }}</span>
             </v-card-title>
             <v-card-text>
               <v-container>
@@ -303,10 +298,10 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="authClose">
+              <v-btn color="blue-darken-1" variant="text" @click="authClose">
                 {{ $t("misc.Cancel") }}
               </v-btn>
-              <v-btn color="blue darken-1" text @click="saveTeamAuth">
+              <v-btn color="blue-darken-1" variant="text" @click="saveTeamAuth">
                 {{ $t("misc.Save") }}
               </v-btn>
             </v-card-actions>
@@ -314,15 +309,15 @@
         </v-dialog>
         <v-dialog v-model="deleteDialog" max-width="500px">
           <v-card>
-            <v-card-title class="headline">
+            <v-card-title class="text-h5">
               {{ $t("Team.DeleteConfirmation") }}
             </v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">
+              <v-btn color="blue-darken-1" variant="text" @click="closeDelete">
                 {{ $t("misc.Cancel") }}
               </v-btn>
-              <v-btn color="red darken-1" text @click="deleteMemberConfirm">
+              <v-btn color="red-darken-1" variant="text" @click="deleteMemberConfirm">
                 {{ $t("misc.OK") }}
               </v-btn>
               <v-spacer></v-spacer>
@@ -421,7 +416,7 @@ export default {
       teamDeleted: false,
       logoFile: null,
       logoPreview: null,
-      apiUrl: process.env?.VUE_APP_G5V_API_URL || "/api",
+      apiUrl: process.env.VUE_APP_G5V_API_URL || "/api",
       imageLoaded: true
     };
   },
@@ -438,23 +433,23 @@ export default {
     userAuthHeaders() {
       return [
         {
-          text: "",
-          value: "tag",
+          title: "",
+          key: "tag",
           sortable: false
         },
         {
-          text: this.$t("Team.Username"),
-          value: "username"
+          title: this.$t("Team.Username"),
+          key: "username"
         },
         {
-          text: this.$t("Team.SteamIDTitle"),
+          title: this.$t("Team.SteamIDTitle"),
           align: "start",
           sortable: true,
-          value: "steamid"
+          key: "steamid"
         },
         {
-          text: "",
-          value: "actions",
+          title: "",
+          key: "actions",
           sortable: false
         }
       ];

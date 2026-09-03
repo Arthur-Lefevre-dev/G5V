@@ -11,7 +11,7 @@
           lg="3"
         >
           <div class="justify-space-between">
-            <v-card dense elevation="3" min-height="">
+            <v-card density="compact" elevation="3" min-height="">
               <v-card-title> {{ mapInfo.map_display_name }} </v-card-title>
               <v-card-subtitle
                 >{{ mapInfo.map_name }}
@@ -25,11 +25,8 @@
               <v-card-actions class="pt-0">
                 <v-btn
                   class="ml-2 mt-3"
-                  fab
                   icon
-                  height="40px"
-                  right
-                  width="40px"
+                  size="small"
                   @click="
                     selectedMap = mapInfo;
                     deleteDialog = true;
@@ -39,11 +36,8 @@
                 </v-btn>
                 <v-btn
                   class="ml-2 mt-3"
-                  fab
                   icon
-                  height="40px"
-                  left
-                  width="40px"
+                  size="small"
                   @click="mapInfo.reveal = true"
                 >
                   <v-icon>mdi-pencil</v-icon>
@@ -61,23 +55,23 @@
                     <v-text-field
                       v-model="mapInfo.map_display_name"
                       :label="$t('User.MapDisplayName')"
-                      dense
+                      density="compact"
                     />
                     <v-text-field
                       v-model="mapInfo.map_name"
                       :label="$t('User.MapName')"
-                      dense
+                      density="compact"
                     />
                     <v-checkbox
                       v-model="mapInfo.enabled"
                       :label="$t('User.MapEnabled')"
-                      dense
+                      density="compact"
                     />
                   </v-card-subtitle>
                   <v-card-actions class="pt-0">
                     <v-btn
-                      text
-                      color="teal accent-4"
+                      variant="text"
+                      color="teal-accent-4"
                       @click="
                         UpdateMapInfo(mapInfo);
                         mapInfo.reveal = false;
@@ -96,7 +90,7 @@
     <v-dialog v-model="deleteDialog" max-width="600px">
       <v-card>
         <v-card-title>
-          <span class="headline">
+          <span class="text-h5">
             {{ $t("User.MapDeleteTitle") }}
           </span>
         </v-card-title>
@@ -117,28 +111,40 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="darken-1" text @click="deleteDialog = false">
+          <v-btn variant="text" @click="deleteDialog = false">
             {{ $t("misc.Cancel") }}
           </v-btn>
-          <v-btn color="primary" text @click="DeleteMapInfo(selectedMap)">
+          <v-btn color="primary" variant="text" @click="DeleteMapInfo(selectedMap)">
             {{ $t("misc.Confirm") }}
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-row class="mb-2">
+      <v-col cols="12" class="d-flex flex-wrap ga-2">
+        <v-btn
+          color="primary"
+          variant="tonal"
+          :loading="importingDefaults"
+          @click="importRedwoodPool"
+        >
+          {{ $t("User.MapImportPool") }}
+        </v-btn>
+        <span v-if="importMsg" class="text-medium-emphasis text-body-2 align-self-center">
+          {{ importMsg }}
+        </span>
+      </v-col>
+    </v-row>
     <v-row>
       <v-col cols="12" sm="12" md="12" lg="3">
         <div class="justify-space-between">
-          <v-card dense elevation="3">
+          <v-card density="compact" elevation="3">
             <v-card-title> {{ $t("User.MapNew") }} </v-card-title>
             <v-card-actions class="pt-0">
               <v-btn
                 class="ml-2 mt-3"
-                fab
                 icon
-                height="40px"
-                left
-                width="40px"
+                size="small"
                 @click="newMapReveal = true"
               >
                 <v-icon>mdi-plus</v-icon>
@@ -156,23 +162,23 @@
                   <v-text-field
                     v-model="newMap.map_display_name"
                     :label="$t('User.MapDisplayName')"
-                    dense
+                    density="compact"
                   />
                   <v-text-field
                     v-model="newMap.map_name"
                     :label="$t('User.MapName')"
-                    dense
+                    density="compact"
                   />
                   <v-checkbox
                     v-model="newMap.enabled"
                     :label="$t('User.MapEnabled')"
-                    dense
+                    density="compact"
                   />
                 </v-card-subtitle>
                 <v-card-actions class="pt-0">
                   <v-btn
-                    text
-                    color="teal accent-4"
+                    variant="text"
+                    color="teal-accent-4"
                     @click="
                       newMap = {
                         map_display_name: '',
@@ -185,8 +191,8 @@
                     {{ $t("misc.Cancel") }}
                   </v-btn>
                   <v-btn
-                    text
-                    color="teal accent-4"
+                    variant="text"
+                    color="teal-accent-4"
                     @click="InsertMapInfo(newMap)"
                   >
                     {{ $t("User.MapSave") }}
@@ -202,6 +208,8 @@
 </template>
 
 <script>
+import { REDWOOD_MAP_POOL } from "@/utils/maps.js";
+
 export default {
   props: {
     user: Object
@@ -213,6 +221,8 @@ export default {
       deleteDialog: false,
       selectedMap: {},
       newMapReveal: false,
+      importingDefaults: false,
+      importMsg: "",
       newMap: {
         map_display_name: "",
         map_name: "",
@@ -226,6 +236,7 @@ export default {
   methods: {
     async GetMapInfo() {
       try {
+        this.MapList = [];
         let res = await this.GetUserMapList(this.user.id);
         if (typeof res == "string") res = [];
         else {
@@ -238,6 +249,37 @@ export default {
         console.log(error);
       }
       return;
+    },
+    async importRedwoodPool() {
+      this.importingDefaults = true;
+      this.importMsg = "";
+      try {
+        const existing = new Set(
+          this.MapList.map(m => String(m.map_name).toLowerCase())
+        );
+        let added = 0;
+        for (const map of REDWOOD_MAP_POOL) {
+          if (existing.has(map.map_name.toLowerCase())) continue;
+          await this.InsertUserMapInfo([
+            {
+              map_name: map.map_name,
+              map_display_name: map.map_display_name,
+              enabled: true
+            }
+          ]);
+          added += 1;
+        }
+        await this.GetMapInfo();
+        this.importMsg =
+          added > 0
+            ? this.$t("User.MapImportDone", { count: added })
+            : this.$t("User.MapImportNone");
+      } catch (error) {
+        console.log(error);
+        this.importMsg = this.$t("User.MapImportError");
+      } finally {
+        this.importingDefaults = false;
+      }
     },
     async UpdateMapInfo(mapInfo) {
       try {

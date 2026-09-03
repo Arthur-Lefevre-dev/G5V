@@ -1,1 +1,10 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 87.5 100"><defs><style>.cls-1{fill:#1697f6;}.cls-2{fill:#7bc6ff;}.cls-3{fill:#1867c0;}.cls-4{fill:#aeddff;}</style></defs><title>Artboard 46</title><polyline class="cls-1" points="43.75 0 23.31 0 43.75 48.32"/><polygon class="cls-2" points="43.75 62.5 43.75 100 0 14.58 22.92 14.58 43.75 62.5"/><polyline class="cls-3" points="43.75 0 64.19 0 43.75 48.32"/><polygon class="cls-4" points="64.58 14.58 87.5 14.58 43.75 100 43.75 62.5 64.58 14.58"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Redwood">
+  <rect width="64" height="64" rx="10" fill="#0e1419"/>
+  <rect x="2" y="2" width="60" height="60" rx="8" fill="none" stroke="#de9b35" stroke-width="2"/>
+  <!-- Stylized R / chevron mark -->
+  <path
+    fill="#de9b35"
+    d="M18 14h16.5c7.2 0 12.5 4.4 12.5 11.2 0 5.1-2.9 9.1-7.6 10.5L48 50h-9.2L30.5 37.2H26V50h-8V14zm8 16.4h7.8c3.1 0 5.1-1.7 5.1-4.4s-2-4.3-5.1-4.3H26v8.7z"
+  />
+  <path fill="#b87a24" d="M18 50V14h3.5v36H18z"/>
+</svg>

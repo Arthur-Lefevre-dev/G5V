@@ -1,13 +1,12 @@
 <template>
   <v-data-table
-    item-key="name"
+    item-value="name"
     class="elevation-1"
     :loading="isLoading"
     :loading-text="$t('misc.LoadText')"
     :headers="headers"
     :items="matches"
-    :sort-by="['id']"
-    sort-desc
+    :sort-by="[{ key: 'id', order: 'desc' }]"
     ref="MatchesTable"
   >
     <template v-slot:item.id="{ item }">
@@ -50,9 +49,9 @@
     </template>
     <template v-slot:top>
       <div v-if="isMyMatches && isThereCancelledMatches">
-        <v-toolbar flat>
+        <v-toolbar flat class="g5-table-toolbar">
           <v-toolbar-title>
-            <v-btn primary @click="deleteCancelled" :loading="deletePending">
+            <v-btn color="primary" @click="deleteCancelled" :loading="deletePending">
               {{ $t("Matches.DeleteButton") }}
             </v-btn>
           </v-toolbar-title>
@@ -93,26 +92,26 @@ export default {
     headers() {
       return [
         {
-          text: this.$t("Matches.MatchID"),
+          title: this.$t("Matches.MatchID"),
           align: "start",
           sortable: true,
-          value: "id"
+          key: "id"
         },
         {
-          text: this.$t("Matches.Team1"),
-          value: "team1_string"
+          title: this.$t("Matches.Team1"),
+          key: "team1_string"
         },
         {
-          text: this.$t("Matches.Team2"),
-          value: "team2_string"
+          title: this.$t("Matches.Team2"),
+          key: "team2_string"
         },
         {
-          text: this.$t("Matches.Status"),
-          value: "match_status"
+          title: this.$t("Matches.Status"),
+          key: "match_status"
         },
         {
-          text: this.$t("Matches.Owner"),
-          value: "owner"
+          title: this.$t("Matches.Owner"),
+          key: "owner"
         }
       ];
     }

@@ -1,30 +1,28 @@
 <template>
-  <v-footer padless>
-    <v-card class="flex primary" flat tile>
+  <v-footer>
+    <v-card class="flex g5-footer" flat tile width="100%">
       <v-card-title class="secondary">
         <v-spacer />
-        <v-tooltip v-if="!$vuetify.theme.dark" top>
-          <template v-slot:activator="{ on }">
-            <v-btn v-on="on" small icon @click="darkMode">
-              <v-icon class="mr-1">mdi-moon-waxing-crescent</v-icon>
+        <v-tooltip v-if="!isDarkTheme" location="top">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" icon size="small" @click="toggleTheme">
+              <v-icon>mdi-moon-waxing-crescent</v-icon>
             </v-btn>
           </template>
           <span>{{ $t("Navbar.DarkMode") }}</span>
         </v-tooltip>
-        <v-tooltip v-if="$vuetify.theme.dark" top>
-          <template v-slot:activator="{ on }">
-            <v-btn v-on="on" small icon @click="darkMode">
-              <v-icon class="r-3">mdi-weather-sunny</v-icon>
+        <v-tooltip v-else location="top">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" icon size="small" @click="toggleTheme">
+              <v-icon>mdi-weather-sunny</v-icon>
             </v-btn>
           </template>
           <span>{{ $t("Navbar.DarkMode") }}</span>
         </v-tooltip>
-        <v-menu top offset-y open-on-hover>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn class="mx-4" icon small v-bind="attrs" v-on="on">
-              <v-icon size="24px">
-                mdi-translate
-              </v-icon>
+        <v-menu location="top" open-on-hover>
+          <template v-slot:activator="{ props }">
+            <v-btn class="mx-4" icon size="small" v-bind="props">
+              <v-icon size="24">mdi-translate</v-icon>
             </v-btn>
           </template>
           <v-list>
@@ -37,19 +35,16 @@
             </v-list-item>
           </v-list>
         </v-menu>
-        <v-tooltip top>
-          <template v-slot:activator="{ on, attrs }">
+        <v-tooltip location="top">
+          <template v-slot:activator="{ props }">
             <v-btn
               class="mx-4"
               icon
-              small
-              v-bind="attrs"
-              v-on="on"
+              size="small"
+              v-bind="props"
               :to="'/metrics'"
             >
-              <v-icon size="24px">
-                mdi-information
-              </v-icon>
+              <v-icon size="24">mdi-information</v-icon>
             </v-btn>
           </template>
           <span>{{ $t("Footer.metrics") }}</span>
@@ -64,48 +59,65 @@
     </v-card>
   </v-footer>
 </template>
+
 <script>
+const THEME_DARK = "cs2Dark";
+const THEME_LIGHT = "cs2Light";
+
+function themeName(vuetifyTheme) {
+  const name = vuetifyTheme?.global?.name;
+  return typeof name === "object" && name !== null ? name.value : name;
+}
+
+function applyDocumentTheme(name) {
+  document.documentElement.dataset.theme = name || THEME_DARK;
+}
+
 export default {
   name: "Footer",
   data() {
     return {
+      themeTick: 0,
       languages: [
-        {
-          Language: "English",
-          Code: "en"
-        },
-        {
-          Language: "Français",
-          Code: "fr"
-        },
-        {
-          Language: "日本語",
-          Code: "jp"
-        }
+        { Language: "English", Code: "en" },
+        { Language: "Français", Code: "fr" },
+        { Language: "日本語", Code: "jp" }
       ]
     };
   },
+  computed: {
+    isDarkTheme() {
+      // themeTick forces recompute after toggle
+      void this.themeTick;
+      return themeName(this.$vuetify.theme) !== THEME_LIGHT;
+    }
+  },
   methods: {
-    handleLanguage: function(command) {
+    handleLanguage(command) {
       this.ChangeLanguage(command);
-      // Bottom bar with timeout.
     },
-    darkMode() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-      localStorage.setItem("theme", this.$vuetify.theme.dark.toString());
+    setTheme(name) {
+      if (typeof this.$vuetify.theme.change === "function") {
+        this.$vuetify.theme.change(name);
+      } else {
+        this.$vuetify.theme.global.name = name;
+      }
+      applyDocumentTheme(name);
+      localStorage.setItem("theme", name === THEME_DARK ? "true" : "false");
+      this.themeTick += 1;
+    },
+    toggleTheme() {
+      this.setTheme(this.isDarkTheme ? THEME_LIGHT : THEME_DARK);
     }
   },
   mounted() {
     const language = localStorage.getItem("language");
-    const theme = localStorage.getItem("theme");
     if (language) this.$i18n.locale = language;
-    if (theme) {
-      if (theme == "true") {
-        this.$vuetify.theme.dark = true;
-      } else {
-        this.$vuetify.theme.dark = false;
-      }
-    }
+
+    const theme = localStorage.getItem("theme");
+    const initial =
+      theme === "false" ? THEME_LIGHT : theme === "true" ? THEME_DARK : THEME_DARK;
+    this.setTheme(initial);
   }
 };
 </script>
