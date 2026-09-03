@@ -1,13 +1,8 @@
-<<<<<<< HEAD
 # Redwood
-=======
-# Get5Vue3 - Front-end website for G5API
-_**Status: Supported.**_
->>>>>>> e625c96bac51216ca245a2586c6557e1ed13ba51
 
 Front-end CS2 match & tournament panel for [G5API](https://github.com/PhlexPlexico/G5API).
 
-Fork / modernization of [Get5Vue (G5V)](https://github.com/PhlexPlexico/G5V): **Vue 3**, **Vuetify 3**, **Vite**, UI style CS2, native single-elim tournaments with a public bracket.
+Fork / modernization of [Get5Vue (G5V)](https://github.com/PhlexPlexico/G5V): **Vue 3**, **Vuetify 3**, **Vite**, CS2-inspired UI, native single-elim tournaments with a public bracket.
 
 ---
 
@@ -21,16 +16,10 @@ Fork / modernization of [Get5Vue (G5V)](https://github.com/PhlexPlexico/G5V): **
 | Vue Router / Vuex / vue-i18n | 4 / 4 / 10 |
 | Axios | 1.x |
 
-Requires a running **G5API** instance (Steam login, matches, RCON, stats). Steam Web API key is configured **in G5API**, not in this repo — see [G5API Configuration](https://github.com/PhlexPlexico/G5API/wiki/Configuration).
+Requires a running **G5API** instance (Steam login, matches, RCON, stats). The Steam Web API key is configured **in G5API**, not in this repo — see [G5API Configuration](https://github.com/PhlexPlexico/G5API/wiki/Configuration).
 
 ---
 
-<<<<<<< HEAD
-=======
-Get5Vue3 (G5V) is going to be a replacement for the get5-webpanel. _Currently_ this is an implementation for the extent of [G5API](https://github.com/phlexplexico/G5API) and is going to focus on basic features of presenting data.
-
-
->>>>>>> e625c96bac51216ca245a2586c6557e1ed13ba51
 ## Features
 
 - Teams, servers, matches (create / control via RCON)
@@ -52,7 +41,7 @@ Get5Vue3 (G5V) is going to be a replacement for the get5-webpanel. _Currently_ t
 ### Prerequisites
 
 - Node.js 20+
-- npm or yarn
+- npm (recommended) or yarn
 - Working [G5API](https://github.com/PhlexPlexico/G5API) (default proxy target: `http://localhost:3301`)
 
 ### Environment
@@ -84,7 +73,7 @@ npm run preview  # preview production build
 npm run lint
 ```
 
-Yarn works the same (`yarn`, `yarn serve`, `yarn build`).
+Equivalent with yarn: `yarn`, `yarn serve`, `yarn build`.
 
 ---
 
@@ -105,7 +94,7 @@ docker run --name redwood -p 80:80 yourname/redwood:latest
 
 ### DockerfileFull
 
-Builds inside the image (Node 20):
+Builds inside the image (Node 20; uses yarn in the container):
 
 ```bash
 docker build -t yourname/redwood:latest -f DockerfileFull \
@@ -175,7 +164,6 @@ Special thanks (upstream):
 
 ## Screenshots
 
-<<<<<<< HEAD
 ![](./screenshots/MainPage.png)  
 ![](./screenshots/MainPageLoggedIn.png)  
 ![](./screenshots/SideMenuLoggedOut.png)  
@@ -187,10 +175,6 @@ Special thanks (upstream):
 ![](./screenshots/ServersPage.png)
 
 ---
-=======
-# Used By
-Here are a few organizations that have used this webpanel for tournaments/pugs/seasons:
->>>>>>> e625c96bac51216ca245a2586c6557e1ed13ba51
 
 ## License
 
