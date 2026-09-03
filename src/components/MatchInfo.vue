@@ -1,131 +1,118 @@
 <template>
-  <v-container class="mapstatsinfo" fluid>
-    <div class="text-right" v-if="AdminToolsAvailable(matchInfo)">
+  <v-container class="match-info-panel" fluid>
+    <!-- Admin actions -->
+    <div class="d-flex justify-end mb-2" v-if="AdminToolsAvailable(matchInfo)">
       <AdminButton
         :matchInfo="matchInfo"
         :user="user"
         @force-the-reload="getMatchInfo()"
       />
     </div>
-    <div v-else />
-    <div class="text-h4 names" align="center">
-      <router-link
-        v-if="matchInfo.team1.id != 0"
-        :to="{ path: '/teams/' + matchInfo.team1_id }"
-      >
-        <div v-if="matchInfo.team1.logo != null">
-          <img
-            :src="apiUrl + '/static/img/logos/' + matchInfo.team1.logo + '.png'"
-            style="border-radius: 5px; width: 40px; height: 32px;"
-            @error="imgUrlAlt"
-          />
-          {{ matchInfo.team1_name }}
-        </div>
-        <div v-else-if="matchInfo.team1.flag != null">
-          <img
-            :src="get_flag_link(matchInfo.team1)"
-            style="border-radius: 5px;"
-          />
-          {{ matchInfo.team1_name }}
-        </div>
-        <div v-else>
-          {{ matchInfo.team1_name }}
-        </div>
-      </router-link>
-      <div v-else>
-        {{ matchInfo.team1_name }}
-      </div>
-      {{ $t("Matches.Versus") }}
-      <router-link
-        v-if="matchInfo.team2.id != 0"
-        :to="{ path: '/teams/' + matchInfo.team2_id }"
-      >
-        <div v-if="matchInfo.team2.logo != null">
-          <img
-            :src="apiUrl + '/static/img/logos/' + matchInfo.team2.logo + '.png'"
-            style="border-radius: 5px; width: 40px; height: 32px;"
-            @error="imgUrlAlt"
-          />
-          {{ matchInfo.team2_name }}
-        </div>
-        <div v-else-if="matchInfo.team2.flag != null">
-          <img
-            :src="get_flag_link(matchInfo.team2)"
-            style="border-radius: 5px;"
-          />
-          {{ matchInfo.team2_name }}
-        </div>
-        <div v-else>
-          {{ matchInfo.team2_name }}
-        </div>
-      </router-link>
-      <div v-else>
-        {{ matchInfo.team2_name }}
-      </div>
+
+    <!-- Team names row -->
+    <v-row align="center" justify="center" class="my-4" no-gutters>
+      <!-- Team 1 -->
+      <v-col cols="5" class="text-center">
+        <component
+          :is="matchInfo.team1.id != 0 ? 'router-link' : 'div'"
+          v-bind="matchInfo.team1.id != 0 ? { to: '/teams/' + matchInfo.team1_id } : {}"
+          class="match-team-link"
+        >
+          <div class="d-flex flex-column align-center ga-1">
+            <img
+              v-if="matchInfo.team1.logo"
+              :src="apiUrl + '/static/img/logos/' + matchInfo.team1.logo + '.png'"
+              class="match-team-logo"
+              @error="imgUrlAlt"
+            />
+            <img
+              v-else-if="matchInfo.team1.flag"
+              :src="get_flag_link(matchInfo.team1)"
+              class="match-team-flag"
+            />
+            <span class="text-h5 font-weight-bold text-primary">
+              {{ matchInfo.team1_name }}
+            </span>
+          </div>
+        </component>
+      </v-col>
+
+      <!-- VS -->
+      <v-col cols="2" class="text-center">
+        <span class="text-h6 text-medium-emphasis">{{ $t("Matches.Versus") }}</span>
+      </v-col>
+
+      <!-- Team 2 -->
+      <v-col cols="5" class="text-center">
+        <component
+          :is="matchInfo.team2.id != 0 ? 'router-link' : 'div'"
+          v-bind="matchInfo.team2.id != 0 ? { to: '/teams/' + matchInfo.team2_id } : {}"
+          class="match-team-link"
+        >
+          <div class="d-flex flex-column align-center ga-1">
+            <img
+              v-if="matchInfo.team2.logo"
+              :src="apiUrl + '/static/img/logos/' + matchInfo.team2.logo + '.png'"
+              class="match-team-logo"
+              @error="imgUrlAlt"
+            />
+            <img
+              v-else-if="matchInfo.team2.flag"
+              :src="get_flag_link(matchInfo.team2)"
+              class="match-team-flag"
+            />
+            <span class="text-h5 font-weight-bold text-primary">
+              {{ matchInfo.team2_name }}
+            </span>
+          </div>
+        </component>
+      </v-col>
+    </v-row>
+
+    <!-- Score -->
+    <div class="match-score-block text-center my-4">
+      <span class="text-h2 font-weight-bold text-primary">{{ matchInfo.team1_score }}</span>
+      <span class="text-h3 mx-4 text-medium-emphasis">{{ matchInfo.symbol }}</span>
+      <span class="text-h2 font-weight-bold text-primary">{{ matchInfo.team2_score }}</span>
     </div>
-    <div class="final-score match-score text-h2 g5-card pa-4 my-4" align="center">
-      <span class="text-primary">{{ matchInfo.team1_score }}</span>
-      <span class="mx-4 text-medium-emphasis">{{ matchInfo.symbol }}</span>
-      <span class="text-primary">{{ matchInfo.team2_score }}</span>
-    </div>
-    <div class="start-date text-subtitle-2" align="center">
+
+    <!-- Match details -->
+    <div class="text-center text-subtitle-2 text-medium-emphasis mb-1">
       {{ $t("Match.StartTime") }} {{ matchInfo.start_time }}
     </div>
     <div
-      class="end-date text-subtitle-2"
-      align="center"
       v-if="matchInfo.end_time != null"
+      class="text-center text-subtitle-2 text-medium-emphasis mb-1"
     >
       {{ $t("Match.EndTime") }} {{ matchInfo.end_time }}
     </div>
-    <div v-if="matchInfo.forfeit == 1" align="center">
-      <strong>
-        {{ $t("Match.MatchForfeitedBy", { team: get_loser(matchInfo) }) }}
-      </strong>
+    <div v-if="matchInfo.forfeit == 1" class="text-center font-weight-bold text-error mt-2">
+      {{ $t("Match.MatchForfeitedBy", { team: get_loser(matchInfo) }) }}
     </div>
-    <div v-else-if="matchInfo.cancelled == 1" align="center">
-      <strong>
-        {{ $t("Match.MatchHasBeenCancelled") }}
-      </strong>
+    <div v-else-if="matchInfo.cancelled == 1" class="text-center font-weight-bold text-error mt-2">
+      {{ $t("Match.MatchHasBeenCancelled") }}
     </div>
+
+    <!-- Connect buttons -->
     <div
-      align="center"
-      v-if="
-        user.id != null &&
-          serverInfo.ip_string != '' &&
-          matchInfo.end_time == null
-      "
+      v-if="user.id != null && serverInfo.ip_string != '' && matchInfo.end_time == null"
+      class="d-flex justify-center ga-3 flex-wrap mt-4"
     >
       <v-btn
         color="primary"
         size="small"
-        :href="
-          'steam://rungame/730/' +
-            user.steam_id +
-            '/+connect%20' +
-            serverInfo.ip_string +
-            ':' +
-            serverInfo.port
-        "
+        :href="connectUrl"
       >
         {{ $t("Match.Connect") }}
       </v-btn>
-      <div v-if="serverInfo.gotv_port != null">
-        <v-btn
-          color="secondary"
-          size="small"
-          :href="
-            'steam://rungame/730/' +
-              user.steam_id +
-              '/+connect%20' +
-              serverInfo.ip_string +
-              ':' +
-              serverInfo.gotv_port
-          "
-        >
-          {{ $t("Match.GOTVConnect") }}
-        </v-btn>
-      </div>
+      <v-btn
+        v-if="serverInfo.gotv_port != null"
+        color="secondary"
+        size="small"
+        :href="gotvUrl"
+      >
+        {{ $t("Match.GOTVConnect") }}
+      </v-btn>
     </div>
   </v-container>
 </template>
@@ -139,6 +126,14 @@ export default {
   props: {
     match_id: Number,
     user: Object
+  },
+  computed: {
+    connectUrl() {
+      return `steam://rungame/730/${this.user.steam_id}/+connect%20${this.serverInfo.ip_string}:${this.serverInfo.port}`;
+    },
+    gotvUrl() {
+      return `steam://rungame/730/${this.user.steam_id}/+connect%20${this.serverInfo.ip_string}:${this.serverInfo.gotv_port}`;
+    }
   },
   data() {
     return {
@@ -267,3 +262,33 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.match-info-panel {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.match-team-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.match-team-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.match-team-flag {
+  border-radius: 4px;
+  height: 24px;
+}
+
+.match-score-block {
+  padding: 16px;
+  border-radius: 8px;
+  background: rgba(var(--v-theme-surface-variant), 0.08);
+}
+</style>

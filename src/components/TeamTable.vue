@@ -497,28 +497,36 @@ export default {
     },
     teamDeleted(val) {
       if (val) this.$router.push({ name: `Home` });
+    },
+    // Re-initialize when the user prop resolves (parent fetches it async)
+    "user.id"(newId) {
+      if (newId != null && newId !== -1) this.initForRoute();
     }
   },
   mounted() {
-    if (this.$route.params.id != "create") {
-      this.GetTeamInfo();
-    } else {
-      this.isLoading = false;
-      this.isDisabled = false;
-      this.teamInfo = {
-        id: -1,
-        name: "New Team",
-        flag: "",
-        logo: "",
-        tag: this.$t("Team.NewTag"),
-        public: 0,
-        owner: this.user.name,
-        owner_id: this.user.id
-      };
-    }
     this.flags = this.GetFlags();
+    this.initForRoute();
   },
   methods: {
+    initForRoute() {
+      if (this.$route.params.id !== "create") {
+        this.GetTeamInfo();
+      } else {
+        this.isLoading = false;
+        this.isDisabled = false;
+        this.isMembersDisabled = false;
+        this.teamInfo = {
+          id: -1,
+          name: "New Team",
+          flag: "",
+          logo: "",
+          tag: this.$t("Team.NewTag"),
+          public: 0,
+          owner: this.user ? this.user.name : "",
+          owner_id: this.user ? this.user.id : -1
+        };
+      }
+    },
     imgUrlAlt(event) {
       if (event.target.src.includes("svg")) this.imageLoaded = false;
       else event.target.src = event.target.src.replace("png", "svg");

@@ -15,18 +15,16 @@
           <v-col cols="12">
             <v-select
               v-model="selectedServer"
-              :items="servers"
-              item-title="display_name"
+              :items="serverItems"
+              item-title="label"
               item-value="id"
-              :rules="[v => v != -1 || $t('misc.Required')]"
+              :rules="[v => (v != null && v != -1) || $t('misc.Required')]"
               :label="$t('CreateMatch.ServerLabel')"
+              :loading="serversLoading"
+              :no-data-text="$t('CreateMatch.NoServers')"
               required
               ref="newServer"
-            >
-              <template v-slot:item="{ item }">
-                {{ item.display_name }} {{ item.flag }}
-              </template>
-            </v-select>
+            />
           </v-col>
           <v-card-text>
             {{ $t("CreateMatch.ServerNote") }}
@@ -368,9 +366,10 @@ export default {
   data: () => ({
     step: 1,
     servers: [],
+    serversLoading: true,
     teams: [],
     seasons: [],
-    selectedServer: -1,
+    selectedServer: null,
     selectedSeasonObject: {},
     newServer: {},
     selectedSeason: -1,
@@ -408,6 +407,13 @@ export default {
         default:
           return this.$t("CreateMatch.FormError");
       }
+    },
+    serverItems() {
+      if (!Array.isArray(this.servers)) return [];
+      return this.servers.map(s => ({
+        id: s.id,
+        label: `${s.display_name || s.ip_string}:${s.port}`
+      }));
     }
   },
   watch: {
@@ -482,12 +488,16 @@ export default {
     }
   },
   async created() {
-    this.servers = await this.GetAllAvailableServers();
-    if (typeof this.servers != "string") {
-      this.servers.sort((a, b) => {
+    const rawServers = await this.GetAllAvailableServers();
+    if (Array.isArray(rawServers)) {
+      rawServers.sort((a, b) => {
         return a.user_id - this.user.id || b.public_server - a.public_server;
       });
+      this.servers = rawServers;
+    } else {
+      this.servers = [];
     }
+    this.serversLoading = false;
     if (this.IsAnyAdmin(this.user)) this.teams = await this.GetAllTeams();
     else {
       let tmpPublicTeams = await this.GetAllTeams();
@@ -506,19 +516,15 @@ export default {
   },
   methods: {
     async ReloadServers() {
-      this.servers = await this.GetAllAvailableServers();
-      let arrIndex = this.servers
-        .map(obj => {
-          return obj.ip_string + " " + obj.port + " " + obj.user_id;
-        })
-        .indexOf(
-          this.newServer.ip_string +
-            " " +
-            this.newServer.port +
-            " " +
-            this.user.id
-        );
-      this.selectedServer = this.servers[arrIndex].id;
+      const rawServers = await this.GetAllAvailableServers();
+      this.servers = Array.isArray(rawServers) ? rawServers : [];
+      const arrIndex = this.servers.findIndex(
+        obj =>
+          obj.ip_string === this.newServer.ip_string &&
+          String(obj.port) === String(this.newServer.port) &&
+          obj.user_id === this.user.id
+      );
+      if (arrIndex >= 0) this.selectedServer = this.servers[arrIndex].id;
       this.newServer = {};
     },
     checkValidation(moveForward = true) {
